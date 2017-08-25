@@ -1,4 +1,4 @@
-package co.edu.poli.passnote.passnote_apk;
+package co.edu.poli.passnote.passnote;
 
 import org.junit.Test;
 

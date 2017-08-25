@@ -1,4 +1,4 @@
-package co.edu.poli.passnote.passnote_apk;
+package co.edu.poli.passnote.passnote;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("co.edu.poli.passnote.passnote_apk", appContext.getPackageName());
+        assertEquals("co.edu.poli.passnote.passnote", appContext.getPackageName());
     }
 }

@@ -1,4 +1,4 @@
-package co.edu.poli.passnote.passnote_apk;
+package co.edu.poli.passnote.passnote;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
