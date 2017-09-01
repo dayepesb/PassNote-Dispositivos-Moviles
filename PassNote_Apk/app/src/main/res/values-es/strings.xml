@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Pass Note</string>
+    <!--      Activity Login      -->
+    <string name="loginEditTextUsername">Nombre De Usuario</string>
+    <string name="loginEditTextPassword">Contraseña</string>
+    <string name="loginSingIn">Registrate</string>
+    <string name="loginSingUp">Iniciar Sesión</string>
+    <string name="loginForgot">Olvidaste tu contraseña ?</string>
+    <!--      Activity SingIn    -->
+    <string name="singInEditTextNames">Nombre</string>
+    <string name="singInEditTextSurnames">Apellidos</string>
+    <string name="singInEditTextEmail">Correo</string>
+    <string name="singInEditTextUsername">Nombre de usuario</string>
+    <string name="singInEditTextPassword">Contraseña</string>
+    <string name="singInEditTextConfirmPassword">Confirmar Contraseña</string>
+    <string name="singInButtonRegister">Registrate</string>
+</resources>

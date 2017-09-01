@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_singIn"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="25dp"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:paddingTop="0dp"
+    android:background="@color/colorPrimaryDark"
+    tools:layout_editor_absoluteY="25dp"
+    tools:layout_editor_absoluteX="0dp"
+    tools:context="co.edu.poli.passnote.passnote.SinginActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/logoSingIn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.03"
+            app:srcCompat="@drawable/passnotelogowhite" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/namesSingIn"
+                style="@style/editText_style"
+
+                android:inputType="textPersonName"
+                android:hint="@string/singInEditTextNames"
+                android:layout_weight="1" />
+
+            <EditText
+                android:id="@+id/surnamesSingIn"
+                style="@style/editText_style"
+
+                android:inputType="textPersonName"
+                android:hint="@string/singInEditTextSurnames"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <EditText
+            android:id="@+id/emailSingIn"
+            style="@style/editText_style"
+            android:inputType="textPersonName"
+            android:hint="@string/singInEditTextEmail" />
+        <EditText
+            android:id="@+id/userNameSingIn"
+            style="@style/editText_style"
+            android:inputType="textPersonName"
+            android:hint="@string/singInEditTextUsername" />
+        <EditText
+            android:id="@+id/passwordSingIn"
+            style="@style/editText_style"
+            android:inputType="textPassword"
+            android:hint="@string/singInEditTextPassword" />
+        <EditText
+            android:id="@+id/confirmPsswordSingIn"
+            style="@style/editText_style"
+            android:inputType="textPassword"
+            android:hint="@string/singInEditTextConfirmPassword" />
+
+        <Button
+            android:id="@+id/resgisterSingIn"
+            style="@style/button_style"
+            android:layout_width="132dp"
+            android:layout_height="39dp"
+            android:layout_gravity="center"
+            android:text="@string/singInButtonRegister" />
+
+    </LinearLayout>
+</RelativeLayout>

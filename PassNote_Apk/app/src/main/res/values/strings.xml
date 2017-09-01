@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">PassNote</string>
+    <string name="app_name">Pass Note</string>
+    <!--      Activity Login      -->
+    <string name="loginEditTextUsername">Username</string>
+    <string name="loginEditTextPassword">Pssword</string>
+    <string name="loginSingIn">SingIn</string>
+    <string name="loginSingUp">Login</string>
+    <string name="loginForgot">Forgot your password ?</string>
+    <!--      Activity SingIn    -->
+    <string name="singInEditTextNames">Names</string>
+    <string name="singInEditTextSurnames">Surnames</string>
+    <string name="singInEditTextEmail">Email</string>
+    <string name="singInEditTextUsername">Username</string>
+    <string name="singInEditTextPassword">Passsword</string>
+    <string name="singInEditTextConfirmPassword">Confirm Passsword</string>
+    <string name="singInButtonRegister">Register</string>
 </resources>
