@@ -1,20 +1,18 @@
 package passnote.poli.edu.co.PassNote.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "PASSWORD_RESET_TOKENS")
+@Access(AccessType.PROPERTY)
 public class PasswordResetTokenEntity extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
     private String token;
 
-    @OneToOne
-    private UserEntity user;
+    private UsersEntity user;
 
     private Date expirationDate;
 
@@ -26,11 +24,12 @@ public class PasswordResetTokenEntity extends BaseEntity {
         this.token = token;
     }
 
-    public UserEntity getUser() {
+    @OneToOne
+    public UsersEntity getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(UsersEntity user) {
         this.user = user;
     }
 

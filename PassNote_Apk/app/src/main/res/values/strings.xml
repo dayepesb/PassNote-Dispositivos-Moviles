@@ -3,15 +3,22 @@
     <!--      Activity Login      -->
     <string name="loginEditTextUsername">Username</string>
     <string name="loginEditTextPassword">Pssword</string>
-    <string name="loginSingIn">SingIn</string>
-    <string name="loginSingUp">Login</string>
+    <string name="loginSingIn">Login</string>
+    <string name="loginSingUp">Signup</string>
     <string name="loginForgot">Forgot your password ?</string>
-    <!--      Activity SingIn    -->
-    <string name="singInEditTextNames">Names</string>
-    <string name="singInEditTextSurnames">Surnames</string>
-    <string name="singInEditTextEmail">Email</string>
-    <string name="singInEditTextUsername">Username</string>
-    <string name="singInEditTextPassword">Passsword</string>
-    <string name="singInEditTextConfirmPassword">Confirm Passsword</string>
-    <string name="singInButtonRegister">Register</string>
+    <string name="login_authentication_failed">Incorrect username or password</string>
+    <string name="login_credentials_required">Username and password are required</string>
+    <!--      Activity Signup    -->
+    <string name="singupEditTextNames">Names</string>
+    <string name="singupEditTextSurnames">Surnames</string>
+    <string name="singupEditTextEmail">Email</string>
+    <string name="singupEditTextUsername">Username</string>
+    <string name="singupEditTextPassword">Passsword</string>
+    <string name="singupEditTextConfirmPassword">Confirm Passsword</string>
+    <string name="singupButtonRegister">Register</string>
+    <string name="title_activity_accounts">Accounts</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_search">search</string>
 </resources>

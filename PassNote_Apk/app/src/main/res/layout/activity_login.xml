@@ -29,18 +29,16 @@
             />
 
         <EditText
+            android:id="@+id/loginUsername"
             style="@style/editText_style"
             android:hint="@string/loginEditTextUsername"
-            android:inputType="textPersonName"
-            android:id="@+id/userName"
-            />
+            android:inputType="textPersonName" />
 
         <EditText
+            android:id="@+id/loginPassword"
             style="@style/editText_style"
             android:hint="@string/loginEditTextPassword"
-            android:inputType="textPassword"
-            android:id="@+id/PassWord"
-            />
+            android:inputType="textPassword" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,16 +46,19 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/buttonSingIn"
-                style="@style/button_style"
-                android:layout_weight="1"
-                android:onClick="register"
-                android:text="@string/loginSingIn" />
-            <Button
                 android:id="@+id/buttonSingUp"
                 style="@style/button_style"
                 android:layout_weight="1"
+                android:onClick="register"
                 android:text="@string/loginSingUp" />
+
+            <Button
+                android:id="@+id/buttonSingIn"
+                style="@style/button_style"
+                android:layout_weight="1"
+                android:onClick="login"
+                android:text="@string/loginSingIn" />
+
         </LinearLayout>
 
         <TextView

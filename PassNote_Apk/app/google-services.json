@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "456780417890",
+    "firebase_url": "https://passnote-7a463.firebaseio.com",
+    "project_id": "passnote-7a463",
+    "storage_bucket": "passnote-7a463.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456780417890:android:5994cebf0616f875",
+        "android_client_info": {
+          "package_name": "co.edu.poli.passnote.passnote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456780417890-8epjb0fa6kcmkitc4gj096132hn0aj2f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.edu.poli.passnote.passnote",
+            "certificate_hash": "e4e5fb3b30a2eb87caab2f6915ee8bafd3b0e431"
+          }
+        },
+        {
+          "client_id": "456780417890-unjsm4ubpktmir0eim8nmf742hnsam0l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdkkSdo-edQ-BxpjZIkkUaLp1_q7BKzfA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456780417890-unjsm4ubpktmir0eim8nmf742hnsam0l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -13,7 +13,7 @@
     android:background="@color/colorPrimaryDark"
     tools:layout_editor_absoluteY="25dp"
     tools:layout_editor_absoluteX="0dp"
-    tools:context="co.edu.poli.passnote.passnote.SinginActivity">
+    tools:context="co.edu.poli.passnote.passnote.SignupActivity">
 
 
     <LinearLayout
@@ -38,7 +38,7 @@
                 style="@style/editText_style"
 
                 android:inputType="textPersonName"
-                android:hint="@string/singInEditTextNames"
+                android:hint="@string/singupEditTextNames"
                 android:layout_weight="1" />
 
             <EditText
@@ -46,29 +46,29 @@
                 style="@style/editText_style"
 
                 android:inputType="textPersonName"
-                android:hint="@string/singInEditTextSurnames"
+                android:hint="@string/singupEditTextSurnames"
                 android:layout_weight="1"/>
         </LinearLayout>
         <EditText
             android:id="@+id/emailSingIn"
             style="@style/editText_style"
             android:inputType="textPersonName"
-            android:hint="@string/singInEditTextEmail" />
+            android:hint="@string/singupEditTextEmail" />
         <EditText
             android:id="@+id/userNameSingIn"
             style="@style/editText_style"
             android:inputType="textPersonName"
-            android:hint="@string/singInEditTextUsername" />
+            android:hint="@string/singupEditTextUsername" />
         <EditText
             android:id="@+id/passwordSingIn"
             style="@style/editText_style"
             android:inputType="textPassword"
-            android:hint="@string/singInEditTextPassword" />
+            android:hint="@string/singupEditTextPassword" />
         <EditText
             android:id="@+id/confirmPsswordSingIn"
             style="@style/editText_style"
             android:inputType="textPassword"
-            android:hint="@string/singInEditTextConfirmPassword" />
+            android:hint="@string/singupEditTextConfirmPassword" />
 
         <Button
             android:id="@+id/resgisterSingIn"
@@ -76,7 +76,7 @@
             android:layout_width="132dp"
             android:layout_height="39dp"
             android:layout_gravity="center"
-            android:text="@string/singInButtonRegister" />
+            android:text="@string/singupButtonRegister" />
 
     </LinearLayout>
 </RelativeLayout>

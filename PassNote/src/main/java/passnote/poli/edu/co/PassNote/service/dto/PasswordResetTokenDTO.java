@@ -11,7 +11,7 @@ public class PasswordResetTokenDTO {
     private String token;
 
     @JsonIgnore
-    private UserDTO user;
+    private UsersDTO user;
 
     private Date expirationDate;
 
@@ -23,11 +23,11 @@ public class PasswordResetTokenDTO {
         this.token = token;
     }
 
-    public UserDTO getUser() {
+    public UsersDTO getUser() {
         return user;
     }
 
-    public void setUser(UserDTO user) {
+    public void setUser(UsersDTO user) {
         this.user = user;
     }
 

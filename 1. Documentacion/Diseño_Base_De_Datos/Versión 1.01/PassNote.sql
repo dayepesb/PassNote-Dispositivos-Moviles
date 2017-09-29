@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `PassNote`
 --
+CREATE SCHEMA IF NOT EXISTS `passnote` DEFAULT CHARACTER SET utf8 ;
+USE `passnote` ;
 
 -- --------------------------------------------------------
 

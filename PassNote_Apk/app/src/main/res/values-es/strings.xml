@@ -3,15 +3,21 @@
     <!--      Activity Login      -->
     <string name="loginEditTextUsername">Nombre De Usuario</string>
     <string name="loginEditTextPassword">Contraseña</string>
-    <string name="loginSingIn">Registrate</string>
-    <string name="loginSingUp">Iniciar Sesión</string>
+    <string name="loginSingIn">Iniciar Sesión</string>
+    <string name="loginSingUp">Registrarse</string>
     <string name="loginForgot">Olvidaste tu contraseña ?</string>
     <!--      Activity SingIn    -->
-    <string name="singInEditTextNames">Nombre</string>
-    <string name="singInEditTextSurnames">Apellidos</string>
-    <string name="singInEditTextEmail">Correo</string>
-    <string name="singInEditTextUsername">Nombre de usuario</string>
-    <string name="singInEditTextPassword">Contraseña</string>
-    <string name="singInEditTextConfirmPassword">Confirmar Contraseña</string>
-    <string name="singInButtonRegister">Registrate</string>
+    <string name="singupEditTextNames">Nombre</string>
+    <string name="singupEditTextSurnames">Apellidos</string>
+    <string name="singupEditTextEmail">Correo</string>
+    <string name="singupEditTextUsername">Nombre de usuario</string>
+    <string name="singupEditTextPassword">Contraseña</string>
+    <string name="singupEditTextConfirmPassword">Confirmar Contraseña</string>
+    <string name="singupButtonRegister">Registrate</string>
+    <string name="login_authentication_failed">Usuario o contraseña incorrectos</string>
+    <string name="login_credentials_required">El usuario y la contraseña son requeridos</string>
+    <string name="title_activity_accounts">Cuentas</string>
+    <string name="drawer_open">abrir</string>
+    <string name="drawer_close">cerrar</string>
+    <string name="action_search">buscar</string>
 </resources>
