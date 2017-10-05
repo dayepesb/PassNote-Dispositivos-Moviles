@@ -13,8 +13,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,6 +27,7 @@ import java.util.Map;
 import static co.edu.poli.passnote.passnote.utils.FieldUtils.getTextFromField;
 import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showGeneralError;
 import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showNotification;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -42,18 +46,72 @@ public class SignupActivity extends AppCompatActivity {
 
     public void signup(View view) {
         try {
-            String email = getTextFromField(findViewById(R.id.signupEmail));
-            String password = getTextFromField(findViewById(R.id.signupPassword));
-            String confirmPassword = getTextFromField(findViewById(R.id.signupConfirmPassword));
+            showProgressBar();
+            if (validarCampos()) {
+                final String email = getTextFromField(findViewById(R.id.signupEmail));
+                final String password = getTextFromField(findViewById(R.id.signupPassword));
+                String username = getTextFromField(findViewById(R.id.signupUsername));
 
-            if (StringUtils.equals(password, confirmPassword)) {
-                signup(email, password);
+                FirebaseFirestore.getInstance().collection("users").whereEqualTo("username", username)
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        QuerySnapshot query = task.getResult();
+                        if (!query.isEmpty()) {
+                            Log.d(TAG, "user already exists");
+                            showNotification(SignupActivity.this, R.string.signupUsernameTaken);
+                            hideProgressBar();
+                        } else {
+                            FirebaseFirestore.getInstance().collection("users").whereEqualTo("email", email)
+                                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    QuerySnapshot query = task.getResult();
+                                    if (!query.isEmpty()) {
+                                        Log.d(TAG, "e-mail already exists");
+                                        showNotification(SignupActivity.this, R.string.signupEmailTaken);
+                                        hideProgressBar();
+                                    } else {
+                                        signup(email, password);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
             } else {
-                showNotification(this, R.string.signupErrorPasswordMismatch);
+                hideProgressBar();
             }
         } catch (Exception e) {
+            hideProgressBar();
             showGeneralError(this, e);
         }
+    }
+
+    private boolean validarCampos() {
+        String email = getTextFromField(findViewById(R.id.signupEmail));
+        String password = getTextFromField(findViewById(R.id.signupPassword));
+        String confirmPassword = getTextFromField(findViewById(R.id.signupConfirmPassword));
+        String names = getTextFromField(findViewById(R.id.signupNames));
+        String surnames = getTextFromField(findViewById(R.id.signupSurnames));
+        String username = getTextFromField(findViewById(R.id.signupUsername));
+
+        if (isBlank(email)
+                || isBlank(password)
+                || isBlank(confirmPassword)
+                || isBlank(names)
+                || isBlank(surnames)
+                || isBlank(username)) {
+            showNotification(this, R.string.signupFieldsAreRequired);
+            return false;
+        }
+
+        if (!StringUtils.equals(password, confirmPassword)) {
+            showNotification(this, R.string.signupErrorPasswordMismatch);
+            return false;
+        }
+
+        return true;
     }
 
     private void signup(String email, String password) {
@@ -65,7 +123,15 @@ public class SignupActivity extends AppCompatActivity {
                         hideProgressBar();
                         Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
                         if (!task.isSuccessful()) {
-                            showNotification(SignupActivity.this, R.string.login_authentication_failed);
+                            hideProgressBar();
+                            Exception exception = task.getException();
+                            if (exception instanceof FirebaseAuthWeakPasswordException) {
+                                showNotification(SignupActivity.this, R.string.signupWeakPassword);
+                            } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
+                                showNotification(SignupActivity.this, R.string.singupInvalidEmail);
+                            } else {
+                                showNotification(SignupActivity.this, R.string.genericError);
+                            }
                         } else {
                             createUserInDatabase();
                             goToLogin();

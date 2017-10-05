@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import co.edu.poli.passnote.passnote.utils.NotificationUtils;
 
 import static co.edu.poli.passnote.passnote.utils.FieldUtils.getTextFromField;
+import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showNotification;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class Login extends AppCompatActivity {
@@ -79,18 +80,25 @@ public class Login extends AppCompatActivity {
         try {
             String username = getTextFromField(findViewById(R.id.loginUsername));
 
-            showProgressBar();
-            firebaseAuth.sendPasswordResetEmail(username)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            hideProgressBar();
-                            if (task.isSuccessful()) {
-                                NotificationUtils.showNotification(Login.this, R.string.loginPasswordResetEmailSent);
-                                Log.d(TAG, "Email sent.");
+            if (isNotBlank(username)) {
+                showProgressBar();
+                firebaseAuth.sendPasswordResetEmail(username)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                hideProgressBar();
+                                if (task.isSuccessful()) {
+                                    showNotification(Login.this, R.string.loginPasswordResetEmailSent);
+                                    Log.d(TAG, "Email sent.");
+                                } else {
+                                    showNotification(Login.this, R.string.loginEmailNotFound);
+                                    Log.d(TAG, "Email not found.");
+                                }
                             }
-                        }
-                    });
+                        });
+            } else {
+                showNotification(this, R.string.loginEmailRequiredForPasswordReset);
+            }
         } catch (Exception e) {
             hideProgressBar();
             NotificationUtils.showGeneralError(this);

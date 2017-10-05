@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Pass Note</string>
     <!--      Activity Login      -->
-    <string name="loginEditTextUsername">Nombre De Usuario</string>
+    <string name="loginEditTextUsername">Correo electrónico</string>
     <string name="loginEditTextPassword">Contraseña</string>
     <string name="loginSingIn">Iniciar Sesión</string>
     <string name="loginSingUp">Registrarse</string>
@@ -23,4 +23,11 @@
     <string name="signupErrorPasswordMismatch">Las contraseñas no coinciden</string>
     <string name="genericError">Ha ocurrido un error</string>
     <string name="loginPasswordResetEmailSent">Por favor revisa tu correo para restablecer tu contraseña</string>
+    <string name="loginEmailRequiredForPasswordReset">Por favor ingrese su correo</string>
+    <string name="loginEmailNotFound">No se encontró el correo ingresado.</string>
+    <string name="signupFieldsAreRequired">Todos los campos son requeridos.</string>
+    <string name="signupUsernameTaken">El usuario ya existe</string>
+    <string name="signupEmailTaken">El correo ya ha sido registrado.</string>
+    <string name="signupWeakPassword">La contraseña no es segura.</string>
+    <string name="singupInvalidEmail">El correo no es válido.</string>
 </resources>

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Pass Note</string>
     <!--      Activity Login      -->
-    <string name="loginEditTextUsername">Username</string>
+    <string name="loginEditTextUsername">e-mail</string>
     <string name="loginEditTextPassword">Pssword</string>
     <string name="loginSingIn">Login</string>
     <string name="loginSingUp">Signup</string>
@@ -24,4 +24,11 @@
     <string name="signupErrorPasswordMismatch">Passwords are not the same</string>
     <string name="genericError">An error has occurred</string>
     <string name="loginPasswordResetEmailSent">Please check your e-mail to reset your password</string>
+    <string name="loginEmailRequiredForPasswordReset">Please enter your email</string>
+    <string name="loginEmailNotFound">E-mail not found.</string>
+    <string name="signupFieldsAreRequired">All fields are required.</string>
+    <string name="signupUsernameTaken">The username already exists</string>
+    <string name="signupEmailTaken">The e-mail already exists</string>
+    <string name="signupWeakPassword">The password is not strong</string>
+    <string name="singupInvalidEmail">The e-mail is not valid</string>
 </resources>
