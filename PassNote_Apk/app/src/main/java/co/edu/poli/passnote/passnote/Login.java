@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,6 +14,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import co.edu.poli.passnote.passnote.utils.NotificationUtils;
+
+import static co.edu.poli.passnote.passnote.utils.FieldUtils.getTextFromField;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class Login extends AppCompatActivity {
@@ -62,11 +64,8 @@ public class Login extends AppCompatActivity {
     }
 
     public void login(View v) {
-        EditText usernameField = findViewById(R.id.loginUsername);
-        EditText passwordField = findViewById(R.id.loginPassword);
-
-        String username = usernameField.getText().toString();
-        String password = passwordField.getText().toString();
+        String username = getTextFromField(findViewById(R.id.loginUsername));
+        String password = getTextFromField(findViewById(R.id.loginPassword));
 
         if (isNotBlank(username) && isNotBlank(password)) {
             login(username, password);
@@ -76,18 +75,57 @@ public class Login extends AppCompatActivity {
         }
     }
 
+    public void resetPassword(View v) {
+        try {
+            String username = getTextFromField(findViewById(R.id.loginUsername));
+
+            showProgressBar();
+            firebaseAuth.sendPasswordResetEmail(username)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            hideProgressBar();
+                            if (task.isSuccessful()) {
+                                NotificationUtils.showNotification(Login.this, R.string.loginPasswordResetEmailSent);
+                                Log.d(TAG, "Email sent.");
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            hideProgressBar();
+            NotificationUtils.showGeneralError(this);
+        }
+    }
+
     private void login(String email, String password) {
+        showProgressBar();
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        hideProgressBar();
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             Toast.makeText(Login.this, R.string.login_authentication_failed,
                                     Toast.LENGTH_SHORT).show();
                         } else {
+                            sendEmailVerification();
                             goToAccounts();
+                        }
+                    }
+                });
+    }
+
+    private void sendEmailVerification() {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "Email sent.");
                         }
                     }
                 });
@@ -96,5 +134,13 @@ public class Login extends AppCompatActivity {
     private void goToAccounts() {
         Intent intent = new Intent(this, AccountsActivity.class);
         startActivity(intent);
+    }
+
+    private void showProgressBar() {
+        findViewById(R.id.loginLoadingPanel).setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressBar() {
+        findViewById(R.id.loginLoadingPanel).setVisibility(View.GONE);
     }
 }

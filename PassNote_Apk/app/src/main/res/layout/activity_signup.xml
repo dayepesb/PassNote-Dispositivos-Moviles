@@ -6,14 +6,14 @@
     android:id="@+id/activity_singIn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     android:paddingBottom="25dp"
     android:paddingLeft="30dp"
     android:paddingRight="30dp"
     android:paddingTop="0dp"
-    android:background="@color/colorPrimaryDark"
-    tools:layout_editor_absoluteY="25dp"
+    tools:context="co.edu.poli.passnote.passnote.SignupActivity"
     tools:layout_editor_absoluteX="0dp"
-    tools:context="co.edu.poli.passnote.passnote.SignupActivity">
+    tools:layout_editor_absoluteY="25dp">
 
 
     <LinearLayout
@@ -22,7 +22,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/logoSingIn"
+            android:id="@+id/singupLogo"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.03"
@@ -34,49 +34,66 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/namesSingIn"
+                android:id="@+id/signupNames"
                 style="@style/editText_style"
 
-                android:inputType="textPersonName"
+                android:layout_weight="1"
                 android:hint="@string/singupEditTextNames"
-                android:layout_weight="1" />
+                android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/surnamesSingIn"
+                android:id="@+id/signupSurnames"
                 style="@style/editText_style"
 
-                android:inputType="textPersonName"
+                android:layout_weight="1"
                 android:hint="@string/singupEditTextSurnames"
-                android:layout_weight="1"/>
+                android:inputType="textPersonName" />
         </LinearLayout>
+
         <EditText
-            android:id="@+id/emailSingIn"
+            android:id="@+id/signupEmail"
             style="@style/editText_style"
-            android:inputType="textPersonName"
-            android:hint="@string/singupEditTextEmail" />
+            android:hint="@string/singupEditTextEmail"
+            android:inputType="textPersonName" />
+
         <EditText
-            android:id="@+id/userNameSingIn"
+            android:id="@+id/signupUsername"
             style="@style/editText_style"
-            android:inputType="textPersonName"
-            android:hint="@string/singupEditTextUsername" />
+            android:hint="@string/singupEditTextUsername"
+            android:inputType="textPersonName" />
+
         <EditText
-            android:id="@+id/passwordSingIn"
+            android:id="@+id/signupPassword"
             style="@style/editText_style"
-            android:inputType="textPassword"
-            android:hint="@string/singupEditTextPassword" />
+            android:hint="@string/singupEditTextPassword"
+            android:inputType="textPassword" />
+
         <EditText
-            android:id="@+id/confirmPsswordSingIn"
+            android:id="@+id/signupConfirmPassword"
             style="@style/editText_style"
-            android:inputType="textPassword"
-            android:hint="@string/singupEditTextConfirmPassword" />
+            android:hint="@string/singupEditTextConfirmPassword"
+            android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/resgisterSingIn"
+            android:id="@+id/signupSaveButton"
             style="@style/button_style"
             android:layout_width="132dp"
             android:layout_height="39dp"
             android:layout_gravity="center"
+            android:onClick="signup"
             android:text="@string/singupButtonRegister" />
-
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/signupLoadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
 </RelativeLayout>

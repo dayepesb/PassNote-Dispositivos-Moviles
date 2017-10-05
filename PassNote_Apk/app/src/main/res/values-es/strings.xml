@@ -20,4 +20,7 @@
     <string name="drawer_open">abrir</string>
     <string name="drawer_close">cerrar</string>
     <string name="action_search">buscar</string>
+    <string name="signupErrorPasswordMismatch">Las contraseñas no coinciden</string>
+    <string name="genericError">Ha ocurrido un error</string>
+    <string name="loginPasswordResetEmailSent">Por favor revisa tu correo para restablecer tu contraseña</string>
 </resources>

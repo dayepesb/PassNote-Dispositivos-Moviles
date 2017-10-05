@@ -21,4 +21,7 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_search">search</string>
+    <string name="signupErrorPasswordMismatch">Passwords are not the same</string>
+    <string name="genericError">An error has occurred</string>
+    <string name="loginPasswordResetEmailSent">Please check your e-mail to reset your password</string>
 </resources>
