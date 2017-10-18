@@ -1,4 +1,4 @@
-package co.edu.poli.passnote.passnote;
+package co.edu.poli.passnote.passnote.access;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import co.edu.poli.passnote.passnote.R;
+import co.edu.poli.passnote.passnote.accounts.AccountsActivity;
 import co.edu.poli.passnote.passnote.utils.NotificationUtils;
 
 import static co.edu.poli.passnote.passnote.utils.FieldUtils.getTextFromField;

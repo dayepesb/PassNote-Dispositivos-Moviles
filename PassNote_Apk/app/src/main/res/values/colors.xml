@@ -6,4 +6,5 @@
     <color name="colorWhithe">#FDFDFE</color>
     <color name="colorBlueLigth">#3A75D8</color>
     <color name="colorBlueDark">#204079</color>
+    <color name="defaultText">#444444</color>
 </resources>

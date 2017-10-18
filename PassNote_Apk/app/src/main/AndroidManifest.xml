@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Login"
+            android:name=".access.Login"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,12 +18,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignupActivity"
+            android:name=".access.SignupActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".AccountsActivity"
+            android:name=".accounts.AccountsActivity"
             android:label="@string/title_activity_accounts"
-            android:theme="@style/AppThemeWithActionBar"></activity>
+            android:theme="@style/AppThemeWithActionBar">
+        </activity>
     </application>
 
 </manifest>

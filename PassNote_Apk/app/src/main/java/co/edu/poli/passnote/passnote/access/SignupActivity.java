@@ -1,4 +1,4 @@
-package co.edu.poli.passnote.passnote;
+package co.edu.poli.passnote.passnote.access;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +24,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+import co.edu.poli.passnote.passnote.R;
+
 import static co.edu.poli.passnote.passnote.utils.FieldUtils.getTextFromField;
 import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showGeneralError;
 import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showNotification;
@@ -34,8 +36,7 @@ public class SignupActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getName();
     private FirebaseAuth mAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

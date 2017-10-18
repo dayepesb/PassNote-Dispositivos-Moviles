@@ -1,11 +1,14 @@
-package co.edu.poli.passnote.passnote;
+package co.edu.poli.passnote.passnote.accounts;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,9 +17,25 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
+import java.util.List;
+
+import co.edu.poli.passnote.passnote.R;
+
+import static co.edu.poli.passnote.passnote.utils.ImageUtils.getImageIdByName;
+import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showGeneralError;
 
 public class AccountsActivity extends AppCompatActivity {
+    private static final String TAG = AccountsActivity.class.getName();
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -24,10 +43,22 @@ public class AccountsActivity extends AppCompatActivity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
 
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter<AccountItemAdapter.ViewHolder> adapter;
+    private List<AccountItem> accountItemList;
+
+    private FirebaseFirestore db;
+    private CollectionReference accountsCollection;
+    private CollectionReference usersCollection;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accounts);
+
+        db = FirebaseFirestore.getInstance();
+        accountsCollection = db.collection("accounts");
+        usersCollection = db.collection("users");
 
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -62,6 +93,66 @@ public class AccountsActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             selectItem(0);
         }
+
+        recyclerView = findViewById(R.id.accountsRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(false);
+
+        loadAccounts();
+    }
+
+    private void loadAccounts() {
+        findCurrentUserId(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    String userId = "";
+                    for (DocumentSnapshot user : task.getResult()) {
+                        userId = user.getId();
+                        break;
+                    }
+                    findAccounts(userId, new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                accountItemList = new ArrayList<>();
+                                for (DocumentSnapshot account : task.getResult()) {
+                                    String imageEntryName = account.getString("imageEntryName");
+                                    int imageResourceId = getImageIdByName(AccountsActivity.this, imageEntryName);
+                                    String text = account.getString("name");
+                                    accountItemList.add(new AccountItem(imageResourceId, text));
+                                }
+                                adapter = new AccountItemAdapter(accountItemList, AccountsActivity.this);
+                                recyclerView.setAdapter(adapter);
+                            } else {
+                                showGeneralError(AccountsActivity.this);
+                            }
+                        }
+                    });
+
+                } else {
+                    showGeneralError(AccountsActivity.this);
+                }
+            }
+        });
+    }
+
+    private void findCurrentUserId(OnCompleteListener<QuerySnapshot> callback) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String currentUserEmail = user.getEmail();
+            usersCollection
+                    .whereEqualTo("email", currentUserEmail)
+                    .get()
+                    .addOnCompleteListener(callback);
+        }
+    }
+
+    private void findAccounts(String userId, OnCompleteListener<QuerySnapshot> callback) {
+        accountsCollection
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnCompleteListener(callback);
     }
 
     @Override
