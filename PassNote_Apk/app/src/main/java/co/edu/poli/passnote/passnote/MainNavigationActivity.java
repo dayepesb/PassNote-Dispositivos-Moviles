@@ -37,6 +37,8 @@ public class MainNavigationActivity extends AppCompatActivity {
     private boolean isSearchOpened = false;
     private EditText edtSeach;
 
+    private int lastMenuSelection;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -49,9 +51,11 @@ public class MainNavigationActivity extends AppCompatActivity {
             mDrawer.addDrawerListener(drawerToggle);
             nvDrawer = findViewById(R.id.mainNavigationDrawer);
             setupDrawerContent(nvDrawer);
-            selectAccounts();
+            if (savedInstanceState == null) {
+                selectAccounts();
+            }
         } catch (Exception e) {
-            NotificationUtils.showGeneralError(this, e);
+            NotificationUtils.showGeneralError(e);
         }
     }
 
@@ -72,7 +76,7 @@ public class MainNavigationActivity extends AppCompatActivity {
                     return true;
             }
         } catch (Exception e) {
-            NotificationUtils.showGeneralError(this, e);
+            NotificationUtils.showGeneralError(e);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -96,7 +100,8 @@ public class MainNavigationActivity extends AppCompatActivity {
     private void selectDrawerItem(MenuItem menuItem) {
         Fragment fragment = null;
         Class fragmentClass;
-        switch (menuItem.getItemId()) {
+        lastMenuSelection = menuItem.getItemId();
+        switch (lastMenuSelection) {
             case R.id.nav_first_fragment:
                 fragmentClass = AccountsFragment.class;
                 break;
@@ -122,8 +127,11 @@ public class MainNavigationActivity extends AppCompatActivity {
     }
 
     private void selectAccounts() {
+        selectMenu(AccountsFragment.class, R.string.drawer_accounts);
+    }
+
+    private <T extends Fragment> void selectMenu(Class<T> fragmentClass, int titleId) {
         Fragment fragment = null;
-        Class fragmentClass = AccountsFragment.class;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
@@ -131,7 +139,7 @@ public class MainNavigationActivity extends AppCompatActivity {
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.mainNavigationContent, fragment).commit();
-        setTitle(R.string.drawer_accounts);
+        setTitle(titleId);
         mDrawer.closeDrawers();
     }
 
@@ -146,7 +154,7 @@ public class MainNavigationActivity extends AppCompatActivity {
             super.onPostCreate(savedInstanceState);
             drawerToggle.syncState();
         } catch (Exception e) {
-            NotificationUtils.showGeneralError(this, e);
+            NotificationUtils.showGeneralError(e);
         }
     }
 
@@ -156,7 +164,7 @@ public class MainNavigationActivity extends AppCompatActivity {
             super.onConfigurationChanged(newConfig);
             drawerToggle.onConfigurationChanged(newConfig);
         } catch (Exception e) {
-            NotificationUtils.showGeneralError(this, e);
+            NotificationUtils.showGeneralError(e);
         }
     }
 
@@ -165,7 +173,7 @@ public class MainNavigationActivity extends AppCompatActivity {
         try {
             mSearchAction = menu.findItem(R.id.action_search);
         } catch (Exception e) {
-            NotificationUtils.showGeneralError(this, e);
+            NotificationUtils.showGeneralError(e);
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -213,7 +221,7 @@ public class MainNavigationActivity extends AppCompatActivity {
             }
             super.onBackPressed();
         } catch (Exception e) {
-            NotificationUtils.showGeneralError(this, e);
+            NotificationUtils.showGeneralError(e);
         }
     }
 
@@ -226,7 +234,7 @@ public class MainNavigationActivity extends AppCompatActivity {
         try {
             getMenuInflater().inflate(R.menu.main, menu);
         } catch (Exception e) {
-            NotificationUtils.showGeneralError(this, e);
+            NotificationUtils.showGeneralError(e);
         }
         return true;
     }

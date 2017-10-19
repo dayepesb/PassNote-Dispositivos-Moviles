@@ -21,11 +21,9 @@ import static co.edu.poli.passnote.passnote.utils.ImageUtils.getImageIdByName;
 public class NotesItemAdapter extends RecyclerView.Adapter<NotesItemAdapter.ViewHolder> {
 
     private List<NotesItem> noteItems;
-    private Context context;
 
-    public NotesItemAdapter(List<NotesItem> noteItems, Context context) {
+    public NotesItemAdapter(List<NotesItem> noteItems) {
         this.noteItems = noteItems;
-        this.context = context;
     }
 
     @Override
@@ -36,10 +34,9 @@ public class NotesItemAdapter extends RecyclerView.Adapter<NotesItemAdapter.View
 
     public void onBindViewHolder(ViewHolder holder, int position) {
         NotesItem currentNoteItem = noteItems.get(position);
-        int imageResorceId = getImageIdByName(context, "notesicon");
 
         holder.setText(currentNoteItem.getText());
-        holder.setImage(imageResorceId);
+        holder.setImage(R.drawable.notesicon);
 
     }
 

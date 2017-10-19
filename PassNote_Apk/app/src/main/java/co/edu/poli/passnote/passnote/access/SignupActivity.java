@@ -36,7 +36,7 @@ public class SignupActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getName();
     private FirebaseAuth mAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +60,7 @@ public class SignupActivity extends AppCompatActivity {
                         QuerySnapshot query = task.getResult();
                         if (!query.isEmpty()) {
                             Log.d(TAG, "user already exists");
-                            showNotification(SignupActivity.this, R.string.signupUsernameTaken);
+                            showNotification(R.string.signupUsernameTaken);
                             hideProgressBar();
                         } else {
                             FirebaseFirestore.getInstance().collection("users").whereEqualTo("email", email)
@@ -70,7 +70,7 @@ public class SignupActivity extends AppCompatActivity {
                                     QuerySnapshot query = task.getResult();
                                     if (!query.isEmpty()) {
                                         Log.d(TAG, "e-mail already exists");
-                                        showNotification(SignupActivity.this, R.string.signupEmailTaken);
+                                        showNotification(R.string.signupEmailTaken);
                                         hideProgressBar();
                                     } else {
                                         signup(email, password);
@@ -85,7 +85,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             hideProgressBar();
-            showGeneralError(this, e);
+            showGeneralError(e);
         }
     }
 
@@ -103,12 +103,12 @@ public class SignupActivity extends AppCompatActivity {
                 || isBlank(names)
                 || isBlank(surnames)
                 || isBlank(username)) {
-            showNotification(this, R.string.signupFieldsAreRequired);
+            showNotification(R.string.signupFieldsAreRequired);
             return false;
         }
 
         if (!StringUtils.equals(password, confirmPassword)) {
-            showNotification(this, R.string.signupErrorPasswordMismatch);
+            showNotification(R.string.signupErrorPasswordMismatch);
             return false;
         }
 
@@ -127,11 +127,11 @@ public class SignupActivity extends AppCompatActivity {
                             hideProgressBar();
                             Exception exception = task.getException();
                             if (exception instanceof FirebaseAuthWeakPasswordException) {
-                                showNotification(SignupActivity.this, R.string.signupWeakPassword);
+                                showNotification(R.string.signupWeakPassword);
                             } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
-                                showNotification(SignupActivity.this, R.string.singupInvalidEmail);
+                                showNotification(R.string.singupInvalidEmail);
                             } else {
-                                showNotification(SignupActivity.this, R.string.genericError);
+                                showNotification(R.string.genericError);
                             }
                         } else {
                             createUserInDatabase();

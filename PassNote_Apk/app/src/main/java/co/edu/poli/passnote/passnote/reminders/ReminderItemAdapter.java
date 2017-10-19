@@ -21,11 +21,9 @@ import static co.edu.poli.passnote.passnote.utils.ImageUtils.getImageIdByName;
 
 public class ReminderItemAdapter extends RecyclerView.Adapter<ReminderItemAdapter.ViewHolder> {
     private List<ReminderItem> reminderItems;
-    private Context context;
 
-    public ReminderItemAdapter(List<ReminderItem> reminderItems, Context context) {
+    public ReminderItemAdapter(List<ReminderItem> reminderItems) {
         this.reminderItems = reminderItems;
-        this.context = context;
     }
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,10 +34,9 @@ public class ReminderItemAdapter extends RecyclerView.Adapter<ReminderItemAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ReminderItem currentReminderItem = reminderItems.get(position);
-        int imageResourceId = getImageIdByName(context, "calendaricon");
 
         holder.setText(currentReminderItem.getName());
-        holder.setImage(imageResourceId);
+        holder.setImage(R.drawable.calendaricon);
     }
 
     @Override

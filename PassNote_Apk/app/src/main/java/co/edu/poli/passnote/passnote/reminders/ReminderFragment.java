@@ -27,10 +27,7 @@ import java.util.List;
 import co.edu.poli.passnote.passnote.R;
 import co.edu.poli.passnote.passnote.utils.NotificationUtils;
 
-
-/**
- * Created by johansteven on 19/10/2017.
- */
+import static co.edu.poli.passnote.passnote.Application.getAppContext;
 
 public class ReminderFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -41,34 +38,34 @@ public class ReminderFragment extends Fragment {
     private CollectionReference remindersCollection;
     private CollectionReference usersCollection;
 
+    private View fragmentInflatedView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = null;
         try {
-            view = inflater.inflate(R.layout.fragment_reminders, container, false);
+            fragmentInflatedView = inflater.inflate(R.layout.fragment_reminders, container, false);
         } catch (Exception e) {
-            NotificationUtils.showGeneralError(getContext(), e);
+            NotificationUtils.showGeneralError(e);
         }
-        return view;
+        return fragmentInflatedView;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         try {
             showProgressBar();
             db = FirebaseFirestore.getInstance();
             remindersCollection = db.collection("reminders");
             usersCollection = db.collection("users");
 
-            recyclerView = getActivity().findViewById(R.id.remindersRecyclerView);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView = fragmentInflatedView.findViewById(R.id.remindersRecyclerView);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getAppContext()));
             recyclerView.setHasFixedSize(false);
 
             loadReminders();
-            super.onActivityCreated(savedInstanceState);
         } catch (Exception e) {
-            NotificationUtils.showGeneralError(getContext(), e);
+            NotificationUtils.showGeneralError(e);
         }
     }
 
@@ -92,19 +89,19 @@ public class ReminderFragment extends Fragment {
                                     Date time = (Date) reminder.get("fecha");
                                     reminderItemList.add(new ReminderItem(text, new Timestamp(time.getTime())));
                                 }
-                                adapter = new ReminderItemAdapter(reminderItemList, getContext());
+                                adapter = new ReminderItemAdapter(reminderItemList);
                                 recyclerView.setAdapter(adapter);
                                 hideProgressBar();
                             } else {
                                 hideProgressBar();
-                                NotificationUtils.showGeneralError(getContext());
+                                NotificationUtils.showGeneralError();
                             }
                         }
                     });
 
                 } else {
                     hideProgressBar();
-                    NotificationUtils.showGeneralError(getContext());
+                    NotificationUtils.showGeneralError();
                 }
             }
         });
@@ -124,10 +121,10 @@ public class ReminderFragment extends Fragment {
     }
 
     private void showProgressBar() {
-        getActivity().findViewById(R.id.remindersLoadingPanel).setVisibility(View.VISIBLE);
+        fragmentInflatedView.findViewById(R.id.remindersLoadingPanel).setVisibility(View.VISIBLE);
     }
 
     private void hideProgressBar() {
-        getActivity().findViewById(R.id.remindersLoadingPanel).setVisibility(View.GONE);
+        fragmentInflatedView.findViewById(R.id.remindersLoadingPanel).setVisibility(View.GONE);
     }
 }

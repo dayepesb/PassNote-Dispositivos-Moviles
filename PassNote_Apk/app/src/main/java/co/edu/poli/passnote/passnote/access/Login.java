@@ -91,20 +91,20 @@ public class Login extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 hideProgressBar();
                                 if (task.isSuccessful()) {
-                                    showNotification(Login.this, R.string.loginPasswordResetEmailSent);
+                                    showNotification(R.string.loginPasswordResetEmailSent);
                                     Log.d(TAG, "Email sent.");
                                 } else {
-                                    showNotification(Login.this, R.string.loginEmailNotFound);
+                                    showNotification(R.string.loginEmailNotFound);
                                     Log.d(TAG, "Email not found.");
                                 }
                             }
                         });
             } else {
-                showNotification(this, R.string.loginEmailRequiredForPasswordReset);
+                showNotification(R.string.loginEmailRequiredForPasswordReset);
             }
         } catch (Exception e) {
             hideProgressBar();
-            NotificationUtils.showGeneralError(this);
+            NotificationUtils.showGeneralError();
         }
     }
 

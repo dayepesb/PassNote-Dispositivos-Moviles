@@ -3,7 +3,6 @@ package co.edu.poli.passnote.passnote.notes;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,114 +19,110 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import co.edu.poli.passnote.passnote.R;
-import co.edu.poli.passnote.passnote.utils.NotificationUtils;
-
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static co.edu.poli.passnote.passnote.utils.ImageUtils.getImageIdByName;
-import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showGeneralError;
+import co.edu.poli.passnote.passnote.R;
+import co.edu.poli.passnote.passnote.utils.NotificationUtils;
 
-/**
- * Created by johansteven on 19/10/2017.
- */
+import static co.edu.poli.passnote.passnote.Application.getAppContext;
+import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showGeneralError;
 
 public class NotesFragment extends Fragment {
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter<NotesItemAdapter.ViewHolder>adapter;
-    private List<NotesItem>notesItemList;
+    private RecyclerView.Adapter<NotesItemAdapter.ViewHolder> adapter;
+    private List<NotesItem> notesItemList;
 
     private FirebaseFirestore db;
     private CollectionReference notesCollection;
     private CollectionReference usersCollection;
 
+    private View fragmentInflatedView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
-        View view=null;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         try {
-            view= inflater.inflate(R.layout.fragment_notes,container,false);
-        }catch (Exception e){
-            NotificationUtils.showGeneralError(getContext(),e);
+            fragmentInflatedView = inflater.inflate(R.layout.fragment_notes, container, false);
+        } catch (Exception e) {
+            NotificationUtils.showGeneralError(e);
         }
 
-        return view;
+        return fragmentInflatedView;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         try {
             showProgressBar();
             db = FirebaseFirestore.getInstance();
             notesCollection = db.collection("notes");
             usersCollection = db.collection("users");
 
-            recyclerView = getActivity().findViewById(R.id.notesRecyclerView);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView = fragmentInflatedView.findViewById(R.id.notesRecyclerView);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getAppContext()));
             recyclerView.setHasFixedSize(false);
 
             loadNotes();
-            super.onActivityCreated(savedInstanceState);
-        }catch (Exception e){
-            NotificationUtils.showGeneralError(getContext(),e);
+        } catch (Exception e) {
+            NotificationUtils.showGeneralError(e);
         }
     }
 
-    private void loadNotes(){
+    private void loadNotes() {
         findCurrentUserId(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    String userId="";
-                    for (DocumentSnapshot user: task.getResult()){
-                        userId=user.getId();
+                if (task.isSuccessful()) {
+                    String userId = "";
+                    for (DocumentSnapshot user : task.getResult()) {
+                        userId = user.getId();
                         break;
                     }
                     findNotes(userId, new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if(task.isSuccessful()){
-                                notesItemList =new ArrayList<NotesItem>();
-                                for(DocumentSnapshot note: task.getResult()){
+                            if (task.isSuccessful()) {
+                                notesItemList = new ArrayList<NotesItem>();
+                                for (DocumentSnapshot note : task.getResult()) {
                                     String text = note.getString("name");
-                                    String nota =note.getString("note");
-                                    notesItemList.add(new NotesItem(text,nota));
+                                    String nota = note.getString("note");
+                                    notesItemList.add(new NotesItem(text, nota));
                                 }
-                                adapter = new NotesItemAdapter(notesItemList,getContext());
+                                adapter = new NotesItemAdapter(notesItemList);
                                 recyclerView.setAdapter(adapter);
                                 hideProgressBar();
-                            }else{
+                            } else {
                                 hideProgressBar();
-                                showGeneralError(getContext());
+                                showGeneralError();
                             }
                         }
                     });
-                }else{
+                } else {
                     hideProgressBar();
-                    showGeneralError(getContext());
+                    showGeneralError();
                 }
             }
         });
     }
 
-    private void findCurrentUserId(OnCompleteListener<QuerySnapshot>callback){
+    private void findCurrentUserId(OnCompleteListener<QuerySnapshot> callback) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user!=null){
+        if (user != null) {
             String currentUserEmail = user.getEmail();
-            usersCollection.whereEqualTo("email",currentUserEmail).get().addOnCompleteListener(callback);
+            usersCollection.whereEqualTo("email", currentUserEmail).get().addOnCompleteListener(callback);
         }
     }
 
-    private void findNotes(String userId, OnCompleteListener<QuerySnapshot>callback){
-        notesCollection.whereEqualTo("userId",userId).get().addOnCompleteListener(callback);
+    private void findNotes(String userId, OnCompleteListener<QuerySnapshot> callback) {
+        notesCollection.whereEqualTo("userId", userId).get().addOnCompleteListener(callback);
     }
 
-    private void showProgressBar(){
-        getActivity().findViewById(R.id.notesLoadingPanel).setVisibility(View.VISIBLE);
+    private void showProgressBar() {
+        fragmentInflatedView.findViewById(R.id.notesLoadingPanel).setVisibility(View.VISIBLE);
     }
-    private void hideProgressBar(){
-        getActivity().findViewById(R.id.notesLoadingPanel).setVisibility(View.GONE);
+
+    private void hideProgressBar() {
+        fragmentInflatedView.findViewById(R.id.notesLoadingPanel).setVisibility(View.GONE);
     }
 }

@@ -25,6 +25,7 @@ import java.util.List;
 import co.edu.poli.passnote.passnote.R;
 import co.edu.poli.passnote.passnote.utils.NotificationUtils;
 
+import static co.edu.poli.passnote.passnote.Application.getAppContext;
 import static co.edu.poli.passnote.passnote.utils.ImageUtils.getImageIdByName;
 import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showGeneralError;
 
@@ -37,34 +38,36 @@ public class AccountsFragment extends Fragment {
     private CollectionReference accountsCollection;
     private CollectionReference usersCollection;
 
+    private View fragmentInflatedView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = null;
         try {
-            view = inflater.inflate(R.layout.fragment_accounts, container, false);
+            fragmentInflatedView = inflater.inflate(R.layout.fragment_accounts, container, false);
         } catch (Exception e) {
-            NotificationUtils.showGeneralError(getContext(), e);
+            NotificationUtils.showGeneralError(e);
         }
-        return view;
+        return fragmentInflatedView;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         try {
             showProgressBar();
+
             db = FirebaseFirestore.getInstance();
             accountsCollection = db.collection("accounts");
             usersCollection = db.collection("users");
 
-            recyclerView = getActivity().findViewById(R.id.accountsRecyclerView);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView = fragmentInflatedView.findViewById(R.id.accountsRecyclerView);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getAppContext()));
             recyclerView.setHasFixedSize(false);
 
             loadAccounts();
-            super.onActivityCreated(savedInstanceState);
         } catch (Exception e) {
-            NotificationUtils.showGeneralError(getContext(), e);
+            NotificationUtils.showGeneralError(e);
         }
     }
 
@@ -85,23 +88,23 @@ public class AccountsFragment extends Fragment {
                                 accountItemList = new ArrayList<>();
                                 for (DocumentSnapshot account : task.getResult()) {
                                     String imageEntryName = account.getString("imageEntryName");
-                                    int imageResourceId = getImageIdByName(getContext(), imageEntryName);
+                                    int imageResourceId = getImageIdByName(getAppContext(), imageEntryName);
                                     String text = account.getString("name");
                                     accountItemList.add(new AccountItem(imageResourceId, text));
                                 }
-                                adapter = new AccountItemAdapter(accountItemList, getContext());
+                                adapter = new AccountItemAdapter(accountItemList, getAppContext());
                                 recyclerView.setAdapter(adapter);
                                 hideProgressBar();
                             } else {
                                 hideProgressBar();
-                                showGeneralError(getContext());
+                                showGeneralError();
                             }
                         }
                     });
 
                 } else {
                     hideProgressBar();
-                    showGeneralError(getContext());
+                    showGeneralError();
                 }
             }
         });
@@ -126,10 +129,10 @@ public class AccountsFragment extends Fragment {
     }
 
     private void showProgressBar() {
-        getActivity().findViewById(R.id.accountsLoadingPanel).setVisibility(View.VISIBLE);
+        fragmentInflatedView.findViewById(R.id.accountsLoadingPanel).setVisibility(View.VISIBLE);
     }
 
     private void hideProgressBar() {
-        getActivity().findViewById(R.id.accountsLoadingPanel).setVisibility(View.GONE);
+        fragmentInflatedView.findViewById(R.id.accountsLoadingPanel).setVisibility(View.GONE);
     }
 }
