@@ -24,6 +24,8 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import co.edu.poli.passnote.passnote.accounts.AccountsFragment;
+import co.edu.poli.passnote.passnote.notes.NotesFragment;
+import co.edu.poli.passnote.passnote.reminders.ReminderFragment;
 import co.edu.poli.passnote.passnote.utils.NotificationUtils;
 
 public class MainNavigationActivity extends AppCompatActivity {
@@ -97,6 +99,12 @@ public class MainNavigationActivity extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case R.id.nav_first_fragment:
                 fragmentClass = AccountsFragment.class;
+                break;
+            case R.id.nav_second_fragment:
+                fragmentClass = NotesFragment.class;
+                break;
+            case R.id.nav_third_fragment:
+                fragmentClass = ReminderFragment.class;
                 break;
             default:
                 fragmentClass = AccountsFragment.class;

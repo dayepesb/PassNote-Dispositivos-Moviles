@@ -11,7 +11,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import co.edu.poli.passnote.passnote.R;
-import co.edu.poli.passnote.passnote.reminders.ReminderItemAdapter;
+
+import static co.edu.poli.passnote.passnote.utils.ImageUtils.getImageIdByName;
 
 /**
  * Created by julianCastro on 19/10/2017.
@@ -22,26 +23,27 @@ public class NotesItemAdapter extends RecyclerView.Adapter<NotesItemAdapter.View
     private List<NotesItem> noteItems;
     private Context context;
 
-    public NotesItemAdapter(List<NotesItem>noteItems,Context context){
-        this.noteItems=noteItems;
-        this.context=context;
+    public NotesItemAdapter(List<NotesItem> noteItems, Context context) {
+        this.noteItems = noteItems;
+        this.context = context;
     }
 
     @Override
     public NotesItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.notes_list_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notes_list_item, parent, false);
         return new ViewHolder(view);
     }
 
-    public void onBindViewHolder(ViewHolder holder, int position){
-        NotesItem currentNoteItem= noteItems.get(position);
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        NotesItem currentNoteItem = noteItems.get(position);
+        int imageResorceId = getImageIdByName(context, "notesicon");
 
         holder.setText(currentNoteItem.getText());
-        holder.setImage(100);
+        holder.setImage(imageResorceId);
 
     }
 
-    public int getItemCount(){
+    public int getItemCount() {
         return noteItems.size();
     }
 

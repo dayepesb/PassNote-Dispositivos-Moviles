@@ -91,7 +91,6 @@ public class NotesFragment extends Fragment {
                             if(task.isSuccessful()){
                                 notesItemList =new ArrayList<NotesItem>();
                                 for(DocumentSnapshot note: task.getResult()){
-                                    int imageResorceId = getImageIdByName(getContext(),"notesicon");
                                     String text = note.getString("name");
                                     String nota =note.getString("note");
                                     notesItemList.add(new NotesItem(text,nota));

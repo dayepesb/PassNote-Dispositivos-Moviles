@@ -11,8 +11,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import co.edu.poli.passnote.passnote.R;
-import co.edu.poli.passnote.passnote.accounts.AccountItem;
-import co.edu.poli.passnote.passnote.accounts.AccountItemAdapter;
+
+import static co.edu.poli.passnote.passnote.utils.ImageUtils.getImageIdByName;
 
 
 /**
@@ -23,22 +23,23 @@ public class ReminderItemAdapter extends RecyclerView.Adapter<ReminderItemAdapte
     private List<ReminderItem> reminderItems;
     private Context context;
 
-    public ReminderItemAdapter(List<ReminderItem>reminderItems,Context context){
-        this.reminderItems=reminderItems;
-        this.context=context;
+    public ReminderItemAdapter(List<ReminderItem> reminderItems, Context context) {
+        this.reminderItems = reminderItems;
+        this.context = context;
     }
 
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.reminder_list_item,parent,false);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.reminder_list_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ReminderItem currentReminderItem=reminderItems.get(position);
+        ReminderItem currentReminderItem = reminderItems.get(position);
+        int imageResourceId = getImageIdByName(context, "calendaricon");
 
         holder.setText(currentReminderItem.getName());
-        holder.setImage(100);
+        holder.setImage(imageResourceId);
     }
 
     @Override
