@@ -13,13 +13,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import co.edu.poli.passnote.passnote.MainNavigationActivity;
 import co.edu.poli.passnote.passnote.R;
-import co.edu.poli.passnote.passnote.accounts.AccountsFragment;
 import co.edu.poli.passnote.passnote.utils.NotificationUtils;
 
 import static co.edu.poli.passnote.passnote.utils.FieldUtils.getTextFromField;
+import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showGeneralError;
 import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showNotification;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -28,6 +32,8 @@ public class Login extends AppCompatActivity {
     private final String TAG = this.getClass().getName();
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
+    private FirebaseFirestore db;
+    private CollectionReference usersCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,8 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        usersCollection = db.collection("users");
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -72,7 +80,11 @@ public class Login extends AppCompatActivity {
         String password = getTextFromField(findViewById(R.id.loginPassword));
 
         if (isNotBlank(username) && isNotBlank(password)) {
-            login(username, password);
+            if (username.contains("@")) {
+                loginWithEmail(username, password);
+            } else {
+                loginWithUsername(username, password);
+            }
         } else {
             Toast.makeText(Login.this, R.string.login_credentials_required,
                     Toast.LENGTH_SHORT).show();
@@ -108,7 +120,36 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    private void login(String email, String password) {
+    private void loginWithUsername(String username, final String password) {
+        showProgressBar();
+
+        usersCollection
+                .whereEqualTo("username", username)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String email = "";
+                            for (DocumentSnapshot user : task.getResult()) {
+                                email = user.getString("email");
+                                break;
+                            }
+                            if (isNotBlank(email)) {
+                                loginWithEmail(email, password);
+                            } else {
+                                hideProgressBar();
+                                showNotification(R.string.login_authentication_failed);
+                            }
+                        } else {
+                            hideProgressBar();
+                            showGeneralError();
+                        }
+                    }
+                });
+    }
+
+    private void loginWithEmail(String email, String password) {
         showProgressBar();
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
