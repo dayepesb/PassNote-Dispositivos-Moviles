@@ -14,8 +14,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import co.edu.poli.passnote.passnote.MainNavigationActivity;
 import co.edu.poli.passnote.passnote.R;
-import co.edu.poli.passnote.passnote.accounts.AccountsActivity;
+import co.edu.poli.passnote.passnote.accounts.AccountsFragment;
 import co.edu.poli.passnote.passnote.utils.NotificationUtils;
 
 import static co.edu.poli.passnote.passnote.utils.FieldUtils.getTextFromField;
@@ -142,7 +143,7 @@ public class Login extends AppCompatActivity {
     }
 
     private void goToAccounts() {
-        Intent intent = new Intent(this, AccountsActivity.class);
+        Intent intent = new Intent(this, MainNavigationActivity.class);
         startActivity(intent);
     }
 

@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_first_fragment"
+            android:checked="true"
+            android:icon="@drawable/envato"
+            android:title="@string/drawer_accounts" />
+        <item
+            android:id="@+id/nav_second_fragment"
+            android:icon="@drawable/envato"
+            android:title="@string/drawerNotes" />
+        <item
+            android:id="@+id/nav_third_fragment"
+            android:icon="@drawable/envato"
+            android:title="@string/drawerReminders" />
+
+        <item
+            android:id="@+id/nav_fourth_fragment"
+            android:icon="@drawable/envato"
+            android:title="@string/drawerRepeatedPasswords" />
+    </group>
+</menu>

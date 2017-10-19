@@ -31,4 +31,9 @@
     <string name="signupEmailTaken">The e-mail already exists</string>
     <string name="signupWeakPassword">The password is not strong</string>
     <string name="singupInvalidEmail">The e-mail is not valid</string>
+    <string name="action_settings">Other actions</string>
+    <string name="drawer_accounts">Accounts</string>
+    <string name="drawerNotes">Notes</string>
+    <string name="drawerReminders">Reminders</string>
+    <string name="drawerRepeatedPasswords">Repeated Passwords</string>
 </resources>

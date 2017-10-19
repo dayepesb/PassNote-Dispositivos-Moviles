@@ -30,4 +30,9 @@
     <string name="signupEmailTaken">El correo ya ha sido registrado.</string>
     <string name="signupWeakPassword">La contraseña no es segura.</string>
     <string name="singupInvalidEmail">El correo no es válido.</string>
+    <string name="action_settings">Otras acciones</string>
+    <string name="drawerNotes">Notas</string>
+    <string name="drawerReminders">Recordatorios</string>
+    <string name="drawerRepeatedPasswords">Contraseñas repetidas</string>
+    <string name="drawer_accounts">Cuentas</string>
 </resources>

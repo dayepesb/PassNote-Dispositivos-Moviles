@@ -8,59 +8,6 @@
         <item name="android:actionBarStyle">@style/MyTheme.ActionBarStyle</item>
     </style>
 
-    <!--<style name="AppThemeWithActionBar" parent="Theme.AppCompat.Light">-->
-        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-        <!--<item name="colorPrimaryDark">@color/colorWhithe</item>-->
-        <!--<item name="colorAccent">@color/colorAccent</item>-->
-        <!--<item name="android:actionBarStyle" tools:ignore="NewApi">@style/MyTheme.ActionBarStyle-->
-        <!--</item>-->
-        <!--<item name="actionBarStyle">@style/MyTheme.ActionBarStyle</item>-->
-    <!--</style>-->
-
-    <style name="AppThemeWithActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="actionBarStyle">@style/Widget.AppTheme.ActionBar</item>
-        <item name="actionBarTheme">@style/ThemeOverlay.AppTheme.ActionBar</item>
-        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppTheme.PopupMenu</item>
-
-        <!-- action bar background - without android prefix -->
-        <item name="background">@color/colorPrimary</item>
-        <!-- action bar elevation - without android prefix -->
-        <item name="elevation">4dp</item>
-        <!-- title text color -->
-        <item name="titleTextColor">@color/colorWhithe</item>
-        <!-- subtitle text color -->
-        <item name="subtitleTextColor">@color/colorWhithe</item>
-    </style>
-
-    <style name="Widget.AppTheme.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
-        <!-- action bar background - without android prefix -->
-        <item name="background">@color/colorPrimary</item>
-        <!-- action bar elevation - without android prefix -->
-        <item name="elevation">4dp</item>
-    </style>
-
-    <style name="ThemeOverlay.AppTheme.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <!-- title text color -->
-        <item name="android:textColorPrimary">@color/colorWhithe</item>
-        <!-- subtitle text color -->
-        <item name="android:textColorSecondary">@color/colorWhithe</item>
-        <!-- action menu item text color -->
-        <item name="actionMenuTextColor">@color/colorWhithe</item>
-        <!-- action menu item icon color -->
-        <item name="colorControlNormal">@color/colorWhithe</item>
-    </style>
-
-    <style name="ThemeOverlay.AppTheme.PopupMenu" parent="ThemeOverlay.AppCompat.Dark">
-        <!-- popup menu background - NEVER "android:background" !!! in themes -->
-        <item name="android:colorBackground">@color/colorPrimary</item>
-        <!-- popup menu item text color -->
-        <item name="android:textColorPrimary">@color/colorWhithe</item>
-    </style>
-
-    <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/colorWhithe</item>
-    </style>
-
     <style name="editText_style">
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/edittextlogin_bacground</item>

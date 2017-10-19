@@ -14,17 +14,13 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".access.SignupActivity"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".accounts.AccountsActivity"
-            android:label="@string/title_activity_accounts"
-            android:theme="@style/AppThemeWithActionBar">
-        </activity>
+        <activity android:name=".MainNavigationActivity"></activity>
     </application>
-
 </manifest>
