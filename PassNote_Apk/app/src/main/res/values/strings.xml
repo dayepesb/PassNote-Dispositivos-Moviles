@@ -36,4 +36,13 @@
     <string name="drawerNotes">Notes</string>
     <string name="drawerReminders">Reminders</string>
     <string name="drawerRepeatedPasswords">Repeated Passwords</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="addAccountTitle">Add Account</string>
+    <string name="addAccountCancelBtn">Cancel</string>
+    <string name="addAccountSaveBtn">Save</string>
+    <string name="addAccountInputName">Website name</string>
+    <string name="addAccountInputURL">URL</string>
+    <string name="addAccountInputUsername">Username</string>
+    <string name="addAccountInputPassword">Password</string>
 </resources>

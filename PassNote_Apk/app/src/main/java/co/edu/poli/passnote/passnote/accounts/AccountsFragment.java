@@ -3,6 +3,7 @@ package co.edu.poli.passnote.passnote.accounts;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.edu.poli.passnote.passnote.MainNavigationActivity;
 import co.edu.poli.passnote.passnote.R;
 import co.edu.poli.passnote.passnote.utils.NotificationUtils;
 
@@ -48,6 +50,17 @@ public class AccountsFragment extends Fragment {
         } catch (Exception e) {
             NotificationUtils.showGeneralError(e);
         }
+
+        FloatingActionButton addAccountBtn = fragmentInflatedView.findViewById(R.id.accountsFab);
+        addAccountBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainNavigationActivity parentActivity =
+                        (MainNavigationActivity) AccountsFragment.this.getActivity();
+                parentActivity.showFragment(AddAccountFragment.class);
+            }
+        });
+
         return fragmentInflatedView;
     }
 

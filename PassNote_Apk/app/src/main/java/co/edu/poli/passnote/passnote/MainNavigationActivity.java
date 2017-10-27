@@ -114,6 +114,13 @@ public class MainNavigationActivity extends AppCompatActivity {
             default:
                 fragmentClass = AccountsFragment.class;
         }
+        menuItem.setChecked(true);
+        setTitle(menuItem.getTitle());
+        showFragment(fragmentClass);
+    }
+
+    public void showFragment(Class fragmentClass) {
+        Fragment fragment = null;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
@@ -121,8 +128,6 @@ public class MainNavigationActivity extends AppCompatActivity {
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.mainNavigationContent, fragment).commit();
-        menuItem.setChecked(true);
-        setTitle(menuItem.getTitle());
         mDrawer.closeDrawers();
     }
 
@@ -207,7 +212,7 @@ public class MainNavigationActivity extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(edtSeach, InputMethodManager.SHOW_IMPLICIT);
             mSearchAction.setIcon(ContextCompat.getDrawable(MainNavigationActivity.this
-                    , R.drawable.close));
+                    , R.drawable.ic_close_black_24dp));
             isSearchOpened = true;
         }
     }

@@ -35,4 +35,11 @@
     <string name="drawerReminders">Recordatorios</string>
     <string name="drawerRepeatedPasswords">Contraseñas repetidas</string>
     <string name="drawer_accounts">Cuentas</string>
+    <string name="addAccountTitle">Añadir Cuenta</string>
+    <string name="addAccountCancelBtn">Cancelar</string>
+    <string name="addAccountSaveBtn">Guardar</string>
+    <string name="addAccountInputName">Nombre del sitio</string>
+    <string name="addAccountInputPassword">Contraseña</string>
+    <string name="addAccountInputURL">Dirección URL</string>
+    <string name="addAccountInputUsername">Usuario</string>
 </resources>
