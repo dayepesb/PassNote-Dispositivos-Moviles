@@ -33,8 +33,8 @@ public class AccountItemAdapter extends RecyclerView.Adapter<AccountItemAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         AccountItem currentAccountItem = accountItems.get(position);
 
-        holder.setImage(currentAccountItem.getIconId());
-        holder.setText(currentAccountItem.getText());
+        holder.setImage(currentAccountItem.getLocalImageId());
+        holder.setText(currentAccountItem.getName());
 
     }
 

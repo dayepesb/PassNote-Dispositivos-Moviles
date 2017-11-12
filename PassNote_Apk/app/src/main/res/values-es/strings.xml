@@ -42,4 +42,9 @@
     <string name="addAccountInputPassword">Contraseña</string>
     <string name="addAccountInputURL">Dirección URL</string>
     <string name="addAccountInputUsername">Usuario</string>
+    <string name="addAccountSiteNameRequired">El nombre del sitio es requerido.</string>
+    <string name="addAccountURLRequired">La URL del sitio es requerida.</string>
+    <string name="addAccountUsernameRequired">El usuario es requerido.</string>
+    <string name="addAccountPasswordRequired">La contraseña es requerida.</string>
+    <string name="addAccountDataSavedOK">Información guardada exitosamente.</string>
 </resources>

@@ -45,4 +45,9 @@
     <string name="addAccountInputURL">URL</string>
     <string name="addAccountInputUsername">Username</string>
     <string name="addAccountInputPassword">Password</string>
+    <string name="addAccountSiteNameRequired">Site name is required</string>
+    <string name="addAccountURLRequired">URL is required</string>
+    <string name="addAccountUsernameRequired">Username is required</string>
+    <string name="addAccountPasswordRequired">Password is required</string>
+    <string name="addAccountDataSavedOK">Data saved successfully</string>
 </resources>

@@ -17,7 +17,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import co.edu.poli.passnote.passnote.utils.NotificationUtils;
 import static co.edu.poli.passnote.passnote.Application.getAppContext;
 import static co.edu.poli.passnote.passnote.utils.ImageUtils.getImageIdByName;
 import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showGeneralError;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class AccountsFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -78,7 +81,12 @@ public class AccountsFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(getAppContext()));
             recyclerView.setHasFixedSize(false);
 
-            loadAccounts();
+            accountsCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                    loadAccounts();
+                }
+            });
         } catch (Exception e) {
             NotificationUtils.showGeneralError(e);
         }
@@ -100,9 +108,15 @@ public class AccountsFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 accountItemList = new ArrayList<>();
                                 for (DocumentSnapshot account : task.getResult()) {
-                                    String imageEntryName = account.getString("imageEntryName");
-                                    int imageResourceId = getImageIdByName(getAppContext(), imageEntryName);
+                                    AccountItem accountItem = account.toObject(AccountItem.class);
+
+                                    int imageResourceId = 0;
+                                    if (isNotBlank(accountItem.getImageEntryName())) {
+                                        String imageEntryName = accountItem.getImageEntryName();
+                                        imageResourceId = getImageIdByName(getAppContext(), imageEntryName);
+                                    }
                                     String text = account.getString("name");
+
                                     accountItemList.add(new AccountItem(imageResourceId, text));
                                 }
                                 adapter = new AccountItemAdapter(accountItemList, getAppContext());
