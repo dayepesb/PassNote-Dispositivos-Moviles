@@ -1,84 +1,51 @@
 package co.edu.poli.passnote.passnote.utils;
 
-import android.util.Log;
+import android.util.Base64;
 
-import org.apache.commons.codec.binary.Base64;
-
-import java.nio.charset.Charset;
-import java.security.SecureRandom;
+import java.security.MessageDigest;
+import java.util.Arrays;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+
+import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showGeneralError;
 
 public class EncryptionUtils {
 
-    private static final String TAG = EncryptionUtils.class.getName();
-    private static final String PASSNOTE_ENCRYPTION_SEED = "PassNote rules!!!!";
-    private static final int PASSNOTE_ENCRYPTION_KEYSIZE = 128;
+    public static final String SEED = "PassNote Rules!!!";
 
-    public static String encrypt(String plainTextPassword) {
-        String encryptedPassword = null;
+    public static String encrypt(String clearText) {
+        String result = null;
         try {
-            byte[] passwordBytes = plainTextPassword.getBytes();
-            byte[] seedBytes = PASSNOTE_ENCRYPTION_SEED.getBytes();
-
-            SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
-            secureRandom.setSeed(seedBytes);
-
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(PASSNOTE_ENCRYPTION_KEYSIZE, secureRandom);
-
-            SecretKey secretKey = keyGenerator.generateKey();
-
-            byte[] key = secretKey.getEncoded();
-            byte[] encryptedPasswordBytes = encrypt(key, passwordBytes);
-            encryptedPassword = new String(new Base64().encode(encryptedPasswordBytes),
-                    Charset.defaultCharset());
+            Cipher c = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
+            c.init(Cipher.ENCRYPT_MODE, getKey());
+            byte[] encodedBytes = c.doFinal(clearText.getBytes());
+            result = new String(Base64.encode(encodedBytes, Base64.DEFAULT));
         } catch (Exception e) {
-            Log.e(TAG, "Error during password encryption", e);
+            showGeneralError();
         }
-        return encryptedPassword;
+        return result;
     }
 
-    public static String decrypt(String encryptedPassword) {
-        String decryptedPassword = null;
+    public static String decrypt(String encryptedText) {
+        String result = null;
         try {
-            byte[] encryptedPasswordBytes = new Base64().decode(encryptedPassword);
-            byte[] seedBytes = PASSNOTE_ENCRYPTION_SEED.getBytes();
-
-            SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
-            secureRandom.setSeed(seedBytes);
-
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(PASSNOTE_ENCRYPTION_KEYSIZE, secureRandom);
-
-            SecretKey secretKey = keyGenerator.generateKey();
-            byte[] key = secretKey.getEncoded();
-
-            byte[] decryptedPasswordBytes = decrypt(key, encryptedPasswordBytes);
-            decryptedPassword = new String(decryptedPasswordBytes, Charset.defaultCharset());
+            Cipher c = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
+            c.init(Cipher.DECRYPT_MODE, getKey());
+            byte[] decodedBytes = c.doFinal(Base64.decode(encryptedText, Base64.DEFAULT));
+            result = new String(decodedBytes);
         } catch (Exception e) {
-            Log.e(TAG, "Error decrypting password", e);
+            showGeneralError();
         }
-        return decryptedPassword;
+        return result;
     }
 
-
-    private static byte[] encrypt(byte[] keyBytes, byte[] plainTextDataBytes) throws Exception {
-        SecretKeySpec secretKeySpec = new SecretKeySpec(keyBytes, "AES");
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
-        byte[] encrypted = cipher.doFinal(plainTextDataBytes);
-        return encrypted;
-    }
-
-    private static byte[] decrypt(byte[] keyBytes, byte[] encryptedDataBytes) throws Exception {
-        SecretKeySpec secretKeySpec = new SecretKeySpec(keyBytes, "AES");
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
-        byte[] decrypted = cipher.doFinal(encryptedDataBytes);
-        return decrypted;
+    private static SecretKeySpec getKey() throws Exception {
+        byte[] key = (SEED).getBytes("UTF-8");
+        MessageDigest sha = MessageDigest.getInstance("SHA-1");
+        key = sha.digest(key);
+        key = Arrays.copyOf(key, 16);
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
+        return secretKeySpec;
     }
 }

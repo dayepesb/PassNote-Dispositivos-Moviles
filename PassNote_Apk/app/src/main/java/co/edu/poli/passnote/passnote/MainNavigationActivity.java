@@ -120,9 +120,16 @@ public class MainNavigationActivity extends AppCompatActivity {
     }
 
     public void showFragment(Class fragmentClass) {
+        showFragment(fragmentClass, null);
+    }
+
+    public void showFragment(Class fragmentClass, Bundle arguments) {
         Fragment fragment = null;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
+            if (arguments != null) {
+                fragment.setArguments(arguments);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -35,6 +35,7 @@ import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showGeneralE
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class AccountsFragment extends Fragment {
+    public static final String KEY_SELECTED_ACCOUNT_ID = "UPDATE";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter<AccountItemAdapter.ViewHolder> adapter;
     private List<AccountItem> accountItemList;
@@ -58,13 +59,21 @@ public class AccountsFragment extends Fragment {
         addAccountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainNavigationActivity parentActivity =
-                        (MainNavigationActivity) AccountsFragment.this.getActivity();
-                parentActivity.showFragment(AddAccountFragment.class);
+                showFragment(SaveAccountFragment.class);
             }
         });
 
         return fragmentInflatedView;
+    }
+
+    private void showFragment(Class fragment) {
+        showFragment(fragment, null);
+    }
+
+    private void showFragment(Class fragment, Bundle bundle) {
+        MainNavigationActivity parentActivity =
+                (MainNavigationActivity) AccountsFragment.this.getActivity();
+        parentActivity.showFragment(fragment, bundle);
     }
 
     @Override
@@ -80,6 +89,19 @@ public class AccountsFragment extends Fragment {
             recyclerView = fragmentInflatedView.findViewById(R.id.accountsRecyclerView);
             recyclerView.setLayoutManager(new LinearLayoutManager(getAppContext()));
             recyclerView.setHasFixedSize(false);
+            recyclerView.addOnItemTouchListener(new AccountItemClickListener(getActivity(), recyclerView, new AccountItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(KEY_SELECTED_ACCOUNT_ID, AccountsFragment.this.accountItemList.get(position).getId());
+                    showFragment(SaveAccountFragment.class, bundle);
+                }
+
+                @Override
+                public void onItemLongClick(View view, int position) {
+                    // TODO add context menu with copy username and copy password
+                }
+            }));
 
             accountsCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
@@ -109,15 +131,14 @@ public class AccountsFragment extends Fragment {
                                 accountItemList = new ArrayList<>();
                                 for (DocumentSnapshot account : task.getResult()) {
                                     AccountItem accountItem = account.toObject(AccountItem.class);
-
+                                    accountItem.setId(account.getId());
                                     int imageResourceId = 0;
                                     if (isNotBlank(accountItem.getImageEntryName())) {
                                         String imageEntryName = accountItem.getImageEntryName();
                                         imageResourceId = getImageIdByName(getAppContext(), imageEntryName);
+                                        accountItem.setLocalImageId(imageResourceId);
                                     }
-                                    String text = account.getString("name");
-
-                                    accountItemList.add(new AccountItem(imageResourceId, text));
+                                    accountItemList.add(accountItem);
                                 }
                                 adapter = new AccountItemAdapter(accountItemList, getAppContext());
                                 recyclerView.setAdapter(adapter);

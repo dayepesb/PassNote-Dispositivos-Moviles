@@ -50,4 +50,5 @@
     <string name="addAccountUsernameRequired">Username is required</string>
     <string name="addAccountPasswordRequired">Password is required</string>
     <string name="addAccountDataSavedOK">Data saved successfully</string>
+    <string name="updateAccountTitle">Update Account</string>
 </resources>

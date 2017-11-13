@@ -3,6 +3,7 @@ package co.edu.poli.passnote.passnote.accounts;
 import com.google.firebase.firestore.Exclude;
 
 public class AccountItem {
+    private String id;
     private String imageEntryName;
     private int localImageId;
     private String name;
@@ -14,7 +15,7 @@ public class AccountItem {
     public AccountItem() {
     }
 
-    public AccountItem(int localImageId, String name) {
+    public AccountItem(String id, int localImageId, String name) {
         this.localImageId = localImageId;
         this.name = name;
     }
@@ -35,7 +36,7 @@ public class AccountItem {
         this.URL = URL;
     }
 
-    public String getUsuario() {
+    public String getUsername() {
         return usuario;
     }
 
@@ -67,10 +68,6 @@ public class AccountItem {
         this.userId = userId;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
     @Exclude
     public int getLocalImageId() {
         return localImageId;
@@ -78,5 +75,14 @@ public class AccountItem {
 
     public void setLocalImageId(int localImageId) {
         this.localImageId = localImageId;
+    }
+
+    @Exclude
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
