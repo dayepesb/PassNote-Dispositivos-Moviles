@@ -138,6 +138,71 @@ public class SaveAccountFragment extends Fragment {
         mAccountPasswordTextView.setText(decrypt(mSelectedAccount.getPassword()));
     }
 
+    private void goToHome() {
+        MainNavigationActivity activity = (MainNavigationActivity) getActivity();
+        activity.showFragment(AccountsFragment.class);
+    }
+
+    private void findCurrentUserId(OnCompleteListener<QuerySnapshot> callback) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String currentUserEmail = user.getEmail();
+            usersCollRef
+                    .whereEqualTo("email", currentUserEmail)
+                    .get()
+                    .addOnCompleteListener(callback);
+        }
+    }
+
+    private boolean validateParameters(AccountItem item) {
+        if (isBlank(item.getName())) {
+            showNotification(R.string.addAccountSiteNameRequired);
+            return false;
+        }
+        if (isBlank(item.getURL())) {
+            showNotification(R.string.addAccountURLRequired);
+            return false;
+        }
+        if (isBlank(item.getUsername())) {
+            showNotification(R.string.addAccountUsernameRequired);
+            return false;
+        }
+        if (isBlank(item.getPassword())) {
+            showNotification(R.string.addAccountPasswordRequired);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void readParameters() {
+        mWebsiteName = mAccountNameTextView.getText().toString();
+        mURL = mAccountURLTextView.getText().toString();
+        mUsername = mAccountUsernameTextView.getText().toString();
+        mPassword = mAccountPasswordTextView.getText().toString();
+    }
+
+    @NonNull
+    private AccountItem getAccountItem() {
+        final AccountItem newAccount = new AccountItem();
+        newAccount.setImageEntryName("passnotelogowhite");
+        newAccount.setName(mWebsiteName);
+        newAccount.setURL(mURL);
+        newAccount.setUsername(mUsername);
+        newAccount.setPassword(encrypt(mPassword));
+        return newAccount;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
     private class AddAccountButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -209,70 +274,5 @@ public class SaveAccountFragment extends Fragment {
                 showGeneralError();
             }
         }
-    }
-
-    private void goToHome() {
-        MainNavigationActivity activity = (MainNavigationActivity) getActivity();
-        activity.showFragment(AccountsFragment.class);
-    }
-
-    private void findCurrentUserId(OnCompleteListener<QuerySnapshot> callback) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            String currentUserEmail = user.getEmail();
-            usersCollRef
-                    .whereEqualTo("email", currentUserEmail)
-                    .get()
-                    .addOnCompleteListener(callback);
-        }
-    }
-
-    private boolean validateParameters(AccountItem item) {
-        if (isBlank(item.getName())) {
-            showNotification(R.string.addAccountSiteNameRequired);
-            return false;
-        }
-        if (isBlank(item.getURL())) {
-            showNotification(R.string.addAccountURLRequired);
-            return false;
-        }
-        if (isBlank(item.getUsername())) {
-            showNotification(R.string.addAccountUsernameRequired);
-            return false;
-        }
-        if (isBlank(item.getPassword())) {
-            showNotification(R.string.addAccountPasswordRequired);
-            return false;
-        }
-
-        return true;
-    }
-
-    private void readParameters() {
-        mWebsiteName = mAccountNameTextView.getText().toString();
-        mURL = mAccountURLTextView.getText().toString();
-        mUsername = mAccountUsernameTextView.getText().toString();
-        mPassword = mAccountPasswordTextView.getText().toString();
-    }
-
-    @NonNull
-    private AccountItem getAccountItem() {
-        final AccountItem newAccount = new AccountItem();
-        newAccount.setImageEntryName("passnotelogowhite");
-        newAccount.setName(mWebsiteName);
-        newAccount.setURL(mURL);
-        newAccount.setUsername(mUsername);
-        newAccount.setPassword(encrypt(mPassword));
-        return newAccount;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 }
