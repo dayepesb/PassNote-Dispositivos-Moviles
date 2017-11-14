@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/accountsContextMenuEdit"
+        android:icon="@drawable/action_search"
+        android:title="@string/accountsContextMenuEdit"></item>
+    <item
+        android:id="@+id/accountsContextMenuCopyUsername"
+        android:icon="@drawable/action_search"
+        android:title="@string/accountsContextMenuCopyUsername"></item>
+    <item
+        android:id="@+id/accountsContextMenuCopyPassword"
+        android:icon="@drawable/action_search"
+        android:title="@string/accountsContextMenuCopyPassword"></item>
+    <item
+        android:id="@+id/accountsContextMenuCopyURL"
+        android:icon="@drawable/action_search"
+        android:title="@string/accountsContextMenuCopyURL"></item>
+    <item
+        android:id="@+id/accountsContextMenuDelete"
+        android:icon="@drawable/action_search"
+        android:title="@string/accountsContextMenuDelete"></item>
+</menu>

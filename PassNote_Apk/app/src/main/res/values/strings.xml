@@ -51,4 +51,10 @@
     <string name="addAccountPasswordRequired">Password is required</string>
     <string name="addAccountDataSavedOK">Data saved successfully</string>
     <string name="updateAccountTitle">Update Account</string>
+    <string name="addAccountContextMenuSelect">Select:</string>
+    <string name="accountsContextMenuEdit">Edit</string>
+    <string name="accountsContextMenuCopyUsername">Copy username</string>
+    <string name="accountsContextMenuCopyPassword">Copy password</string>
+    <string name="accountsContextMenuCopyURL">Copy URL</string>
+    <string name="accountsContextMenuDelete">Delete</string>
 </resources>

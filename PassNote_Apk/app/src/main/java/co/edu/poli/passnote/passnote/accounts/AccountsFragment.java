@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -36,34 +37,35 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class AccountsFragment extends Fragment {
     public static final String KEY_SELECTED_ACCOUNT_ID = "UPDATE";
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter<AccountItemAdapter.ViewHolder> adapter;
-    private List<AccountItem> accountItemList;
+
+    private RecyclerView mRecyclerView;
+    private AccountItemAdapter mAdapter;
+    private List<AccountItem> mAccountItems;
+    private View mFragmentInflatedView;
+    private int mSelectedAccountPosition;
 
     private FirebaseFirestore db;
     private CollectionReference accountsCollection;
     private CollectionReference usersCollection;
 
-    private View fragmentInflatedView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         try {
-            fragmentInflatedView = inflater.inflate(R.layout.fragment_accounts, container, false);
+            mFragmentInflatedView = inflater.inflate(R.layout.fragment_accounts, container, false);
+            FloatingActionButton addAccountBtn = mFragmentInflatedView.findViewById(R.id.accountsFab);
+            addAccountBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showFragment(SaveAccountFragment.class);
+                }
+            });
         } catch (Exception e) {
             NotificationUtils.showGeneralError(e);
         }
 
-        FloatingActionButton addAccountBtn = fragmentInflatedView.findViewById(R.id.accountsFab);
-        addAccountBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showFragment(SaveAccountFragment.class);
-            }
-        });
-
-        return fragmentInflatedView;
+        return mFragmentInflatedView;
     }
 
     private void showFragment(Class fragment) {
@@ -86,15 +88,14 @@ public class AccountsFragment extends Fragment {
             accountsCollection = db.collection("accounts");
             usersCollection = db.collection("users");
 
-            recyclerView = fragmentInflatedView.findViewById(R.id.accountsRecyclerView);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getAppContext()));
-            recyclerView.setHasFixedSize(false);
-            recyclerView.addOnItemTouchListener(new AccountItemClickListener(getActivity(), recyclerView, new AccountItemClickListener.OnItemClickListener() {
+            mRecyclerView = mFragmentInflatedView.findViewById(R.id.accountsRecyclerView);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getAppContext()));
+            mRecyclerView.setHasFixedSize(false);
+            mRecyclerView.addOnItemTouchListener(new AccountItemClickListener(getActivity(), mRecyclerView, new AccountItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString(KEY_SELECTED_ACCOUNT_ID, AccountsFragment.this.accountItemList.get(position).getId());
-                    showFragment(SaveAccountFragment.class, bundle);
+                    mSelectedAccountPosition = position;
+                    mRecyclerView.showContextMenuForChild(view);
                 }
 
                 @Override
@@ -102,7 +103,7 @@ public class AccountsFragment extends Fragment {
                     // TODO add context menu with copy username and copy password
                 }
             }));
-
+            registerForContextMenu(mRecyclerView);
             accountsCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
@@ -128,7 +129,7 @@ public class AccountsFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                accountItemList = new ArrayList<>();
+                                mAccountItems = new ArrayList<>();
                                 for (DocumentSnapshot account : task.getResult()) {
                                     AccountItem accountItem = account.toObject(AccountItem.class);
                                     accountItem.setId(account.getId());
@@ -138,10 +139,10 @@ public class AccountsFragment extends Fragment {
                                         imageResourceId = getImageIdByName(getAppContext(), imageEntryName);
                                         accountItem.setLocalImageId(imageResourceId);
                                     }
-                                    accountItemList.add(accountItem);
+                                    mAccountItems.add(accountItem);
                                 }
-                                adapter = new AccountItemAdapter(accountItemList, getAppContext());
-                                recyclerView.setAdapter(adapter);
+                                mAdapter = new AccountItemAdapter(mAccountItems, getActivity());
+                                mRecyclerView.setAdapter(mAdapter);
                                 hideProgressBar();
                             } else {
                                 hideProgressBar();
@@ -177,10 +178,39 @@ public class AccountsFragment extends Fragment {
     }
 
     private void showProgressBar() {
-        fragmentInflatedView.findViewById(R.id.accountsLoadingPanel).setVisibility(View.VISIBLE);
+        mFragmentInflatedView.findViewById(R.id.accountsLoadingPanel).setVisibility(View.VISIBLE);
     }
 
     private void hideProgressBar() {
-        fragmentInflatedView.findViewById(R.id.accountsLoadingPanel).setVisibility(View.GONE);
+        mFragmentInflatedView.findViewById(R.id.accountsLoadingPanel).setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int position = -1;
+        try {
+            position = mAdapter.getPosition();
+        } catch (Exception e) {
+            showGeneralError();
+            return super.onContextItemSelected(item);
+        }
+        switch (item.getItemId()) {
+            case R.id.accountsContextMenuEdit:
+                Bundle bundle = new Bundle();
+                bundle.putString(KEY_SELECTED_ACCOUNT_ID,
+                        AccountsFragment.this.mAccountItems.get(mSelectedAccountPosition).getId());
+                showFragment(SaveAccountFragment.class, bundle);
+                return true;
+            case R.id.accountsContextMenuCopyUsername:
+                return super.onContextItemSelected(item);
+            case R.id.accountsContextMenuCopyPassword:
+                return super.onContextItemSelected(item);
+            case R.id.accountsContextMenuCopyURL:
+                return super.onContextItemSelected(item);
+            case R.id.accountsContextMenuDelete:
+                return super.onContextItemSelected(item);
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 }

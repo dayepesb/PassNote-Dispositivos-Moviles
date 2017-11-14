@@ -48,4 +48,10 @@
     <string name="addAccountPasswordRequired">La contraseña es requerida.</string>
     <string name="addAccountDataSavedOK">Información guardada exitosamente.</string>
     <string name="updateAccountTitle">Actualizar Cuenta</string>
+    <string name="addAccountContextMenuSelect">Seleccione:</string>
+    <string name="accountsContextMenuEdit">Editar</string>
+    <string name="accountsContextMenuCopyUsername">Copiar usuario</string>
+    <string name="accountsContextMenuCopyPassword">Copiar contraseña</string>
+    <string name="accountsContextMenuCopyURL">Copiar URL</string>
+    <string name="accountsContextMenuDelete">Eliminar</string>
 </resources>

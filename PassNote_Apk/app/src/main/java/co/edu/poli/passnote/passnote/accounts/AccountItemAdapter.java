@@ -1,8 +1,10 @@
 package co.edu.poli.passnote.passnote.accounts;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,9 +17,11 @@ import co.edu.poli.passnote.passnote.R;
 public class AccountItemAdapter extends RecyclerView.Adapter<AccountItemAdapter.ViewHolder> {
 
     private List<AccountItem> accountItems;
-    private Context context;
+    private Activity context;
 
-    public AccountItemAdapter(List<AccountItem> accountItems, Context context) {
+    private int position;
+
+    public AccountItemAdapter(List<AccountItem> accountItems, Activity context) {
         this.accountItems = accountItems;
         this.context = context;
     }
@@ -30,12 +34,26 @@ public class AccountItemAdapter extends RecyclerView.Adapter<AccountItemAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         AccountItem currentAccountItem = accountItems.get(position);
 
         holder.setImage(currentAccountItem.getLocalImageId());
         holder.setText(currentAccountItem.getName());
 
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                setPosition(holder.getAdapterPosition());
+                return false;
+            }
+        });
+
+    }
+
+    @Override
+    public void onViewRecycled(ViewHolder holder) {
+        holder.itemView.setOnLongClickListener(null);
+        super.onViewRecycled(holder);
     }
 
     @Override
@@ -43,7 +61,15 @@ public class AccountItemAdapter extends RecyclerView.Adapter<AccountItemAdapter.
         return accountItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         private ImageView imageView;
         private TextView textView;
 
@@ -52,6 +78,7 @@ public class AccountItemAdapter extends RecyclerView.Adapter<AccountItemAdapter.
 
             imageView = itemView.findViewById(R.id.accountItemImage);
             textView = itemView.findViewById(R.id.accountItemName);
+            itemView.setOnCreateContextMenuListener(this);
         }
 
         public void setImage(int idSource) {
@@ -60,6 +87,12 @@ public class AccountItemAdapter extends RecyclerView.Adapter<AccountItemAdapter.
 
         public void setText(String text) {
             textView.setText(text);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            MenuInflater menuInflater = context.getMenuInflater();
+            menuInflater.inflate(R.menu.accounts_context_menu, menu);
         }
     }
 }

@@ -115,16 +115,19 @@ public class SaveAccountFragment extends Fragment {
     }
 
     private void fillAccountInfo() {
+        showProgressBar();
         mSelectedAccountReference
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         synchronizeLocalFieldsWithAccountInfo(documentSnapshot);
+                        hideProgressBar();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                hideProgressBar();
                 showGeneralError(e);
             }
         });
@@ -203,6 +206,14 @@ public class SaveAccountFragment extends Fragment {
         super.onDetach();
     }
 
+    private void showProgressBar() {
+        mFragmentInflatedView.findViewById(R.id.accountsLoadingPanel).setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressBar() {
+        mFragmentInflatedView.findViewById(R.id.accountsLoadingPanel).setVisibility(View.GONE);
+    }
+
     private class AddAccountButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -212,6 +223,7 @@ public class SaveAccountFragment extends Fragment {
                 final AccountItem newAccount = getAccountItem();
 
                 if (validateParameters(newAccount)) {
+                    showProgressBar();
                     findCurrentUserId(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -228,15 +240,19 @@ public class SaveAccountFragment extends Fragment {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 showNotification(R.string.addAccountDataSavedOK);
+                                                hideProgressBar();
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         showGeneralError();
+                                        hideProgressBar();
                                     }
                                 });
 
                                 goToHome();
+                            } else {
+                                hideProgressBar();
                             }
                         }
                     });
@@ -256,17 +272,20 @@ public class SaveAccountFragment extends Fragment {
                 final AccountItem updatedAccount = getAccountItem();
                 updatedAccount.setUserId(mSelectedAccount.getUserId());
                 if (validateParameters(updatedAccount)) {
+                    showProgressBar();
                     mSelectedAccountReference.set(updatedAccount)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     showNotification(R.string.addAccountDataSavedOK);
+                                    hideProgressBar();
                                     goToHome();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             showGeneralError(e);
+                            hideProgressBar();
                         }
                     });
                 }
