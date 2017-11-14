@@ -57,4 +57,11 @@
     <string name="accountsContextMenuCopyPassword">Copy password</string>
     <string name="accountsContextMenuCopyURL">Copy URL</string>
     <string name="accountsContextMenuDelete">Delete</string>
+    <string name="accountsDeleteConfirmation">The account has been deleted successfully</string>
+    <string name="accountsUsernameLabel">Username</string>
+    <string name="accountsPasswordLabel">Password</string>
+    <string name="accontsURLLabel">URL</string>
+    <string name="accountsUsernameCopiedConfirmation">Copied username to clipboard</string>
+    <string name="accountsPasswordCopiedConfirmation">Copied password to clipboard</string>
+    <string name="accountsURLCopiedConfirmation">URL copied to clipboard</string>
 </resources>

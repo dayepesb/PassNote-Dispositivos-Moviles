@@ -1,5 +1,8 @@
 package co.edu.poli.passnote.passnote.accounts;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +29,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import co.edu.poli.passnote.passnote.MainNavigationActivity;
@@ -31,8 +38,10 @@ import co.edu.poli.passnote.passnote.R;
 import co.edu.poli.passnote.passnote.utils.NotificationUtils;
 
 import static co.edu.poli.passnote.passnote.Application.getAppContext;
+import static co.edu.poli.passnote.passnote.utils.EncryptionUtils.decrypt;
 import static co.edu.poli.passnote.passnote.utils.ImageUtils.getImageIdByName;
 import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showGeneralError;
+import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showNotification;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class AccountsFragment extends Fragment {
@@ -45,8 +54,8 @@ public class AccountsFragment extends Fragment {
     private int mSelectedAccountPosition;
 
     private FirebaseFirestore db;
-    private CollectionReference accountsCollection;
-    private CollectionReference usersCollection;
+    private CollectionReference mAccountsCollection;
+    private CollectionReference mUsersCollection;
 
 
     @Override
@@ -85,8 +94,8 @@ public class AccountsFragment extends Fragment {
             showProgressBar();
 
             db = FirebaseFirestore.getInstance();
-            accountsCollection = db.collection("accounts");
-            usersCollection = db.collection("users");
+            mAccountsCollection = db.collection("accounts");
+            mUsersCollection = db.collection("users");
 
             mRecyclerView = mFragmentInflatedView.findViewById(R.id.accountsRecyclerView);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getAppContext()));
@@ -104,7 +113,7 @@ public class AccountsFragment extends Fragment {
                 }
             }));
             registerForContextMenu(mRecyclerView);
-            accountsCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            mAccountsCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
                     loadAccounts();
@@ -141,6 +150,12 @@ public class AccountsFragment extends Fragment {
                                     }
                                     mAccountItems.add(accountItem);
                                 }
+                                Collections.sort(mAccountItems, new Comparator<AccountItem>() {
+                                    @Override
+                                    public int compare(AccountItem accountItem, AccountItem t1) {
+                                        return accountItem.getName().toUpperCase().compareTo(t1.getName().toUpperCase());
+                                    }
+                                });
                                 mAdapter = new AccountItemAdapter(mAccountItems, getActivity());
                                 mRecyclerView.setAdapter(mAdapter);
                                 hideProgressBar();
@@ -163,7 +178,7 @@ public class AccountsFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             String currentUserEmail = user.getEmail();
-            usersCollection
+            mUsersCollection
                     .whereEqualTo("email", currentUserEmail)
                     .get()
                     .addOnCompleteListener(callback);
@@ -171,7 +186,7 @@ public class AccountsFragment extends Fragment {
     }
 
     private void findAccounts(String userId, OnCompleteListener<QuerySnapshot> callback) {
-        accountsCollection
+        mAccountsCollection
                 .whereEqualTo("userId", userId)
                 .get()
                 .addOnCompleteListener(callback);
@@ -194,23 +209,66 @@ public class AccountsFragment extends Fragment {
             showGeneralError();
             return super.onContextItemSelected(item);
         }
+        AccountItem account = AccountsFragment.this.mAccountItems.get(mSelectedAccountPosition);
         switch (item.getItemId()) {
             case R.id.accountsContextMenuEdit:
                 Bundle bundle = new Bundle();
-                bundle.putString(KEY_SELECTED_ACCOUNT_ID,
-                        AccountsFragment.this.mAccountItems.get(mSelectedAccountPosition).getId());
+                bundle.putString(KEY_SELECTED_ACCOUNT_ID, account.getId());
                 showFragment(SaveAccountFragment.class, bundle);
                 return true;
             case R.id.accountsContextMenuCopyUsername:
-                return super.onContextItemSelected(item);
+                copyUsernameToClipboard(account.getUsername());
+                return true;
             case R.id.accountsContextMenuCopyPassword:
-                return super.onContextItemSelected(item);
+                copyPasswordToClipboard(decrypt(account.getPassword()));
+                return true;
             case R.id.accountsContextMenuCopyURL:
-                return super.onContextItemSelected(item);
+                copyURLToClipboard(account.getURL());
+                return true;
             case R.id.accountsContextMenuDelete:
+                removeAccount();
                 return super.onContextItemSelected(item);
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void copyUsernameToClipboard(String username) {
+        copyToClipboard(getString(R.string.accountsUsernameLabel), username);
+        showNotification(R.string.accountsUsernameCopiedConfirmation);
+    }
+
+    private void copyPasswordToClipboard(String password) {
+        copyToClipboard(getString(R.string.accountsPasswordLabel), password);
+        showNotification(R.string.accountsPasswordCopiedConfirmation);
+    }
+
+    private void copyURLToClipboard(String URL) {
+        copyToClipboard(getString(R.string.accontsURLLabel), URL);
+        showNotification(R.string.accountsURLCopiedConfirmation);
+    }
+
+    private void copyToClipboard(String label, String text) {
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, text);
+        clipboard.setPrimaryClip(clip);
+    }
+
+    private void removeAccount() {
+        showProgressBar();
+        AccountItem account = mAccountItems.get(mSelectedAccountPosition);
+        mAccountsCollection.document(account.getId()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                showNotification(R.string.accountsDeleteConfirmation);
+                hideProgressBar();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showGeneralError();
+                hideProgressBar();
+            }
+        });
     }
 }

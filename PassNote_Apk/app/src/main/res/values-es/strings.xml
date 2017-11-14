@@ -54,4 +54,11 @@
     <string name="accountsContextMenuCopyPassword">Copiar contraseña</string>
     <string name="accountsContextMenuCopyURL">Copiar URL</string>
     <string name="accountsContextMenuDelete">Eliminar</string>
+    <string name="accountsDeleteConfirmation">La cuenta ha sido elminada exitosamente.</string>
+    <string name="accountsUsernameLabel">Usuario</string>
+    <string name="accountsPasswordLabel">Contraseña</string>
+    <string name="accontsURLLabel">URL</string>
+    <string name="accountsUsernameCopiedConfirmation">Usuario copiado al portapapeles</string>
+    <string name="accountsPasswordCopiedConfirmation">Contraseña copiada al portapapeles</string>
+    <string name="accountsURLCopiedConfirmation">URL copiada al portapapeles</string>
 </resources>
