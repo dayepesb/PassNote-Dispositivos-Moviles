@@ -63,7 +63,9 @@ public class MainNavigationActivity extends AppCompatActivity implements ToggleH
 
     @TargetApi(Build.VERSION_CODES.O)
     private void disableAutoFill() {
-        getWindow().getDecorView().setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS);
+        if (Build.VERSION.SDK_INT >= 26) {
+            getWindow().getDecorView().setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS);
+        }
     }
 
     private void assignMemberVariables() {
