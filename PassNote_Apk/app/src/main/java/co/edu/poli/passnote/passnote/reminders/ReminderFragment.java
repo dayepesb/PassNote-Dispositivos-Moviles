@@ -27,8 +27,6 @@ import java.util.List;
 
 import co.edu.poli.passnote.passnote.MainNavigationActivity;
 import co.edu.poli.passnote.passnote.R;
-import co.edu.poli.passnote.passnote.accounts.AccountsFragment;
-import co.edu.poli.passnote.passnote.accounts.SaveAccountFragment;
 import co.edu.poli.passnote.passnote.utils.NotificationUtils;
 
 import static co.edu.poli.passnote.passnote.Application.getAppContext;
@@ -53,7 +51,7 @@ public class ReminderFragment extends Fragment {
             addReminderBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showFragment(SaveAccountFragment.class);
+                    showFragment(SaveReminderFragment.class);
                 }
             });
         } catch (Exception e) {
