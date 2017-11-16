@@ -78,6 +78,7 @@ public class AccountsFragment extends Fragment {
     }
 
     private void showFragment(Class fragment) {
+
         showFragment(fragment, null);
     }
 

@@ -59,7 +59,7 @@ public class SaveAccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         try {
-            this.mFragmentInflatedView = inflater.inflate(R.layout.fragment_save_account, container, false);
+            this.mFragmentInflatedView = inflater.inflate(R.layout.fragment_save_account, container,false);
 
             setupMemberVariables();
             setupAddOrUpdateVariables();

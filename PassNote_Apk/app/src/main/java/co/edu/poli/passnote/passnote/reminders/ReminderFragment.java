@@ -3,6 +3,7 @@ package co.edu.poli.passnote.passnote.reminders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +25,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import co.edu.poli.passnote.passnote.MainNavigationActivity;
 import co.edu.poli.passnote.passnote.R;
+import co.edu.poli.passnote.passnote.accounts.AccountsFragment;
+import co.edu.poli.passnote.passnote.accounts.SaveAccountFragment;
 import co.edu.poli.passnote.passnote.utils.NotificationUtils;
 
 import static co.edu.poli.passnote.passnote.Application.getAppContext;
@@ -38,17 +42,34 @@ public class ReminderFragment extends Fragment {
     private CollectionReference remindersCollection;
     private CollectionReference usersCollection;
 
+
     private View fragmentInflatedView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         try {
             fragmentInflatedView = inflater.inflate(R.layout.fragment_reminders, container, false);
+            FloatingActionButton addReminderBtn= fragmentInflatedView.findViewById(R.id.remindersFab);
+            addReminderBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showFragment(SaveAccountFragment.class);
+                }
+            });
         } catch (Exception e) {
             NotificationUtils.showGeneralError(e);
         }
         return fragmentInflatedView;
     }
+    private void showFragment(Class fragment) {
+        showFragment(fragment, null);
+    }
+    private void showFragment(Class fragment, Bundle bundle) {
+        MainNavigationActivity parentActivity =
+                (MainNavigationActivity) ReminderFragment.this.getActivity();
+        parentActivity.showFragment(fragment, bundle);
+    }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
