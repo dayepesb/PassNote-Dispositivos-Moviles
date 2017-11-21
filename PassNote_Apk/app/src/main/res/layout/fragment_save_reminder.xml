@@ -11,21 +11,16 @@
     android:paddingTop="0dp">
 
     <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Reminder Name"
-        android:visibility="visible"
-        android:textColor="#fff"
-        android:textColorHighlight="#fff"/>
+        android:id="@+id/addAccountName"
+        style="@style/editText_style"
+        android:hint="@string/reminderName" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="10dp">
+
 
         <TextView
             android:id="@+id/Time"
@@ -47,6 +42,7 @@
             android:textColor="#fff"
             android:textStyle="bold" />
 
+
         <TextView
             android:id="@+id/Date"
             android:layout_width="match_parent"
@@ -60,21 +56,32 @@
             android:id="@+id/btndatepicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:background="#ffc107"
             android:text="Pick Date"
-            android:layout_marginTop="5dp"
             android:textColor="#fff"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnsave"
-            android:layout_width="302dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="150dp"
-            android:background="#ffc107"
-            android:text="Save Reminder"
-            android:textColor="#fff"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/addAccountCancelBtn"
+                style="@style/button_style"
+                android:layout_weight="1"
+                android:onClick="cancel"
+                android:text="@string/addAccountCancelBtn" />
+
+            <Button
+                android:id="@+id/addAccountSaveBtn"
+                style="@style/button_style"
+                android:layout_weight="1"
+                android:onClick="save"
+                android:text="@string/addAccountSaveBtn" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
