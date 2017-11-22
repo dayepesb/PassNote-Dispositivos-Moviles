@@ -10,10 +10,27 @@ import java.sql.Timestamp;
 public class ReminderItem {
     private String name;
     private Timestamp date;
+    private String userId;
+
+    public ReminderItem(){
+
+    }
 
     public ReminderItem (String name,Timestamp date){
         this.name=name;
         this.date=date;
+    }
+
+    public void setName(String name){
+        this.name=name;
+    }
+
+    public void setDate(Timestamp date){
+        this.date=date;
+    }
+
+    public void setUserId(String userId){
+        this.userId=userId;
     }
 
     public String getName(){
@@ -23,4 +40,6 @@ public class ReminderItem {
     public Timestamp getDate(){
         return this.date;
     }
+
+    public String getUserId(){return this.userId;}
 }

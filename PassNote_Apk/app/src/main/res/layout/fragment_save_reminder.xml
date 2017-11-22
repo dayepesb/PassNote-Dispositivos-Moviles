@@ -26,7 +26,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="150dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -52,40 +52,43 @@
                     style="@style/editText_style"
                     android:hint="@string/reminderName" />
 
+                <TextView
+                    android:id="@+id/Date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#fff"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:text="22/11/2017"
+                    android:textAlignment="center"/>
+
+                <Button
+                    android:id="@+id/btndatepicker"
+                    style="@style/button_style"
+                    android:layout_width="288dp"
+                    android:layout_height="40dp"
+                    android:text="Pick Date" />
+
 
                 <TextView
                     android:id="@+id/Time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#1c1c1c"
+                    android:textColor="#fff"
                     android:paddingTop="10dp"
                     android:textSize="25sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:text="12:00pm"
+                    android:textAlignment="center"/>
 
                 <Button
                     android:id="@+id/btntimepicker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     style="@style/button_style"
+                    android:layout_width="290dp"
+                    android:layout_height="40dp"
                     android:text="Pick Time"
                     android:textStyle="bold" />
 
-
-                <TextView
-                    android:id="@+id/Date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#1c1c1c"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/btndatepicker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/button_style"
-                    android:text="Pick Date"
-                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -110,7 +113,7 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:id="@+id/loginLoadingPanel"
+                android:id="@+id/RemindersLoadingPanel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"

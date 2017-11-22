@@ -20,6 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -105,8 +106,9 @@ public class ReminderFragment extends Fragment {
                                 reminderItemList = new ArrayList<ReminderItem>();
                                 for (DocumentSnapshot reminder : task.getResult()) {
                                     String text = reminder.getString("name");
-                                    Date time = (Date) reminder.get("fecha");
-                                    reminderItemList.add(new ReminderItem(text, new Timestamp(time.getTime())));
+                                    //Timestamp time = (Timestamp) reminder.get("fecha");
+                                    Timestamp time= new Timestamp(1);
+                                    reminderItemList.add(new ReminderItem(text,time));
                                 }
                                 adapter = new ReminderItemAdapter(reminderItemList);
                                 recyclerView.setAdapter(adapter);
