@@ -11,8 +11,17 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showNotification;
 
+
+import co.edu.poli.passnote.passnote.MainNavigationActivity;
 import co.edu.poli.passnote.passnote.R;
+import co.edu.poli.passnote.passnote.accounts.AccountItem;
+import co.edu.poli.passnote.passnote.accounts.AccountsFragment;
+
+import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showNotification;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showGeneralError;
 
@@ -34,6 +43,12 @@ public class SaveReminderFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private View mFragmentInflatedView;
+
+    private TextView mTitle;
+    private Button dateButton;
+    private Button timeButton;
+    private Button mCancelButton;
+    private Button mSaveButton;
 
 
 
@@ -148,15 +163,69 @@ public class SaveReminderFragment extends Fragment {
                              Bundle savedInstanceState) {
         try {
             this.mFragmentInflatedView = inflater.inflate(R.layout.fragment_save_reminder, container,false);
+            setUpVariables();
+            addCancelButtonHandler();
+
             return this.mFragmentInflatedView;
         } catch (Exception e) {
             showGeneralError(e);
         }
         return super.onCreateView(inflater,container,savedInstanceState);
     }
+    private void setUpVariables(){
+        mTitle = mFragmentInflatedView.findViewById(R.id.addReminderTitle);
+        dateButton = mFragmentInflatedView.findViewById(R.id.btndatepicker);
+        timeButton = mFragmentInflatedView.findViewById(R.id.btntimepicker);
+        mCancelButton = mFragmentInflatedView.findViewById(R.id.addReminderCancelBtn);
+        mSaveButton = mFragmentInflatedView.findViewById(R.id.addReminderSaveBtn);
+    }
 
-    static class SaveReminderFragment2 extends AppCompatActivity{
+    private void goToHome(){
+        MainNavigationActivity activity= (MainNavigationActivity)getActivity();
+        activity.showFragment(AccountsFragment.class);
+    }
+
+    private void addCancelButtonHandler(){
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToHome();
+            }
+        });
+    }
+
+    private void addSaveReminderButtonHandler(){
 
     }
+
+    private class SaveReminderButtonListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view) {
+
+        }
+    }
+
+    private boolean validateParameter(ReminderItem item){
+        if(isBlank(item.getName())){
+            showNotification(R.string.addReminderNameRequired);
+            return false;
+        }
+
+        return true;
+    }
+
+    private class AddReminderButtonListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view) {
+
+        }
+    }
+
+
+
 }
+
+
 

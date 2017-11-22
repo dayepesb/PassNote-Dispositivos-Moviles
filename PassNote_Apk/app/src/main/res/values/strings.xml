@@ -65,7 +65,8 @@
     <string name="accountsPasswordCopiedConfirmation">Copied password to clipboard</string>
     <string name="accountsURLCopiedConfirmation">URL copied to clipboard</string>
     <string name="reminderName">Nombre del Recordatorio</string>
-
+    <string name="addReminderTitle">Add Reminder</string>
+    <string name="addReminderNameRequired">Reminder name is required</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
