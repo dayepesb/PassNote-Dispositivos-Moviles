@@ -88,7 +88,6 @@ public class Login extends AppCompatActivity {
         } else {
             Toast.makeText(Login.this, R.string.login_credentials_required,
                     Toast.LENGTH_SHORT).show();
-            loginWithUsername("test", "test123");
         }
     }
 
