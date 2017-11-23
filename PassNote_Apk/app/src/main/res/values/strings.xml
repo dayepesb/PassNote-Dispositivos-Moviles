@@ -64,10 +64,14 @@
     <string name="accountsUsernameCopiedConfirmation">Copied username to clipboard</string>
     <string name="accountsPasswordCopiedConfirmation">Copied password to clipboard</string>
     <string name="accountsURLCopiedConfirmation">URL copied to clipboard</string>
-    <string name="reminderName">Nombre del Recordatorio</string>
+    <string name="reminderName">Reminder Name</string>
     <string name="addReminderTitle">Add Reminder</string>
     <string name="addReminderNameRequired">Reminder name is required</string>
     <string name="addReminderDataSavedOK">Data saved successfully</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_fragment_save_notes">fragment_save_notes</string>
+    <string name="addNoteTitle">Add Note</string>
+    <string name="noteName">Note Name</string>
+    <string name="noteText">Note Text</string>
 </resources>

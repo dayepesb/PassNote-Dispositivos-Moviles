@@ -61,4 +61,8 @@
     <string name="accountsUsernameCopiedConfirmation">Usuario copiado al portapapeles</string>
     <string name="accountsPasswordCopiedConfirmation">Contraseña copiada al portapapeles</string>
     <string name="accountsURLCopiedConfirmation">URL copiada al portapapeles</string>
+    <string name="addNoteTitle">Añadir Nota</string>
+    <string name="reminderName">Nombre del Recordatorio</string>
+    <string name="noteName">Nombre del Recordatorio</string>
+    <string name="noteText">Texto De La Nota</string>
 </resources>

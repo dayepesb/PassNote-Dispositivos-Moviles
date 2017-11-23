@@ -3,6 +3,7 @@ package co.edu.poli.passnote.passnote.notes;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +23,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.edu.poli.passnote.passnote.MainNavigationActivity;
 import co.edu.poli.passnote.passnote.R;
+import co.edu.poli.passnote.passnote.reminders.ReminderFragment;
 import co.edu.poli.passnote.passnote.utils.NotificationUtils;
 
 import static co.edu.poli.passnote.passnote.Application.getAppContext;
@@ -43,6 +46,13 @@ public class NotesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         try {
             fragmentInflatedView = inflater.inflate(R.layout.fragment_notes, container, false);
+            FloatingActionButton addNoteBtn= fragmentInflatedView.findViewById(R.id.notesFab);
+            addNoteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showFragment(SaveNotesFragment.class);
+                }
+            });
         } catch (Exception e) {
             NotificationUtils.showGeneralError(e);
         }
@@ -124,5 +134,13 @@ public class NotesFragment extends Fragment {
 
     private void hideProgressBar() {
         fragmentInflatedView.findViewById(R.id.notesLoadingPanel).setVisibility(View.GONE);
+    }
+    private void showFragment(Class fragment) {
+        showFragment(fragment, null);
+    }
+    private void showFragment(Class fragment, Bundle bundle) {
+        MainNavigationActivity parentActivity =
+                (MainNavigationActivity) NotesFragment.this.getActivity();
+        parentActivity.showFragment(fragment, bundle);
     }
 }

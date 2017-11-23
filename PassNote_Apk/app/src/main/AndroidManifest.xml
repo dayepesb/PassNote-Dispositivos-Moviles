@@ -3,11 +3,11 @@
     package="co.edu.poli.passnote.passnote">
 
     <application
-        android:name="co.edu.poli.passnote.passnote.Application"
+        android:name=".Application"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/passnotelogowhite"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/passnotelogowhite"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden|adjustResize">
@@ -24,6 +24,11 @@
         <activity
             android:name=".access.SignupActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".MainNavigationActivity"></activity>
+        <activity android:name=".MainNavigationActivity" />
+        <activity
+            android:name=".notes.SaveNotesFragment"
+            android:label="@string/title_activity_fragment_save_notes"
+            android:theme="@style/AppTheme"></activity>
     </application>
+
 </manifest>
