@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,9 +29,12 @@ import java.util.List;
 
 import co.edu.poli.passnote.passnote.MainNavigationActivity;
 import co.edu.poli.passnote.passnote.R;
+import co.edu.poli.passnote.passnote.accounts.AccountItem;
+import co.edu.poli.passnote.passnote.accounts.AccountItemAdapter;
 import co.edu.poli.passnote.passnote.utils.NotificationUtils;
 
 import static co.edu.poli.passnote.passnote.Application.getAppContext;
+import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showGeneralError;
 
 public class ReminderFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -40,6 +44,9 @@ public class ReminderFragment extends Fragment {
     private FirebaseFirestore db;
     private CollectionReference remindersCollection;
     private CollectionReference usersCollection;
+    private int mSelectedReminderPosition;
+    private AccountItemAdapter mAdapter;
+    private List<ReminderItem> mReminderItems;
 
 
     private View fragmentInflatedView;
@@ -82,6 +89,19 @@ public class ReminderFragment extends Fragment {
             recyclerView = fragmentInflatedView.findViewById(R.id.remindersRecyclerView);
             recyclerView.setLayoutManager(new LinearLayoutManager(getAppContext()));
             recyclerView.setHasFixedSize(false);
+            recyclerView.addOnItemTouchListener(new ReminderItemClickListener(getActivity(), recyclerView, new ReminderItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                 mSelectedReminderPosition=position;
+                 recyclerView.showContextMenuForChild(view);
+                }
+
+                @Override
+                public void onItemLongClick(View view, int position) {
+
+                }
+            }));
+            registerForContextMenu(recyclerView);
 
             loadReminders();
         } catch (Exception e) {
@@ -127,6 +147,21 @@ public class ReminderFragment extends Fragment {
             }
         });
 
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int position =-1;
+        try{
+            position=mAdapter.getPosition();
+        }catch (Exception e){
+            showGeneralError();
+            return super.onContextItemSelected(item);
+        }
+        ReminderItem reminder = ReminderFragment.this.reminderItemList.get(mSelectedReminderPosition);
+        switch (item.getItemId()){
+
+        }
+        return true;
     }
 
     private void findCurrentUserId(OnCompleteListener<QuerySnapshot> callback) {

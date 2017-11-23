@@ -2,11 +2,14 @@ package co.edu.poli.passnote.passnote.reminders;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,12 +33,15 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.List;
+
 import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showNotification;
 
 
 import co.edu.poli.passnote.passnote.MainNavigationActivity;
 import co.edu.poli.passnote.passnote.R;
 import co.edu.poli.passnote.passnote.accounts.AccountItem;
+import co.edu.poli.passnote.passnote.accounts.AccountItemAdapter;
 import co.edu.poli.passnote.passnote.accounts.AccountsFragment;
 
 import static co.edu.poli.passnote.passnote.utils.NotificationUtils.showNotification;
@@ -61,6 +67,8 @@ public class SaveReminderFragment extends Fragment implements View.OnClickListen
     private String mParam1;
     private String mParam2;
     private View mFragmentInflatedView;
+
+    private List<ReminderItem> mReminderItems;
 
     private TextView mTitle;
     private Button dateButton;
@@ -140,6 +148,9 @@ public class SaveReminderFragment extends Fragment implements View.OnClickListen
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth) {
                             DateText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                            mYear=year;
+                            mMonth=monthOfYear;
+                            mDay=dayOfMonth;
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
@@ -155,6 +166,8 @@ public class SaveReminderFragment extends Fragment implements View.OnClickListen
                 @Override
                 public void onTimeSet(TimePicker timePicker,int hourOfDay,int minute) {
                     TimeText.setText(hourOfDay+":"+minute);
+                    mHour=hourOfDay;
+                    mMinute=minute;
                 }
             },mHour,mMinute,false);
             timePickerDialog.show();
@@ -163,12 +176,14 @@ public class SaveReminderFragment extends Fragment implements View.OnClickListen
     }
 
 
+
     private void setOnClickDate(){
         dateButton.setOnClickListener(this);
     }
     private void setonClickTime(){
         timeButton.setOnClickListener(this);
     }
+
     private void setActualDate(){
         Calendar c = Calendar.getInstance();
         mDay=c.get(Calendar.DAY_OF_MONTH);
@@ -178,7 +193,7 @@ public class SaveReminderFragment extends Fragment implements View.OnClickListen
         mMinute = c.get(Calendar.MINUTE);
 
         DateText.setText(mDay+"/"+mMonth+"/"+mYear);
-        TimeText.setText(mHour+":"+mMinute);
+        TimeText.setText((mHour>9?mHour:0+""+mHour)+":"+(mMinute>9?mMinute:0+""+mMinute));
     }
 
     private void goToHome(){
@@ -245,6 +260,7 @@ public class SaveReminderFragment extends Fragment implements View.OnClickListen
                                 String userId = "";
                                 for(DocumentSnapshot user: task.getResult()){
                                     userId =user.getId();
+
                                     break;
                                 }
                                 newReminder.setUserId(userId);
@@ -262,12 +278,60 @@ public class SaveReminderFragment extends Fragment implements View.OnClickListen
                             }
                         }
                     });
+                    Agregar(view,newReminder);
                 }
             }catch (Exception e){
                 showGeneralError();
             }
         }
     }
+
+    private void Agregar(View v, ReminderItem newReminder){
+
+        //Guardar en calendario
+        Calendar cal = Calendar.getInstance();
+        Intent intent =null;
+        boolean val =false;
+
+
+
+
+        while(val==false){
+            try{
+                cal.set(mYear,mMonth,mDay,mHour,mMinute);
+
+
+                intent=new Intent(Intent.ACTION_EDIT);
+                intent.setType("vnd.android.cursor.item/event");
+
+                intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,cal.getTimeInMillis());
+                intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,cal.getTimeInMillis()+10);
+
+                intent.putExtra(CalendarContract.Events.TITLE,newReminder.getName());
+
+
+/*
+                 intent = new Intent(Intent.ACTION_INSERT)
+                        .setData(CalendarContract.Events.CONTENT_URI)
+                        .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, cal.getTimeInMillis())
+                        .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, cal.getTimeInMillis()*60)
+                        .putExtra(CalendarContract.Events.TITLE, "Yoga")
+                        .putExtra(CalendarContract.Events.DESCRIPTION, "Group class")
+                        .putExtra(CalendarContract.Events.EVENT_LOCATION, "The gym")
+                        .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
+                        .putExtra(Intent.EXTRA_EMAIL, "rowan@example.com,trevor@example.com");
+                startActivity(intent);
+
+*/
+                startActivity(intent);
+                val=true;
+            }catch (Exception e){
+                showGeneralError();
+            }
+        }
+
+    }
+
     private void findCurrentUserId(OnCompleteListener<QuerySnapshot> callback) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
